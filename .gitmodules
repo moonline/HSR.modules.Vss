@@ -1,0 +1,3 @@
+[submodule "commands"]
+	path = commands
+	url = ../../../toolsAndCommands/
