@@ -297,9 +297,160 @@ Systembetrachtung setzt sich aus View Points zusammen (Gesichtswinkeln), weil  s
 
 \exam{Beispiel mit File Fetch Java mitnehmen. Beispiel mit Socket kommt garantiert an Prüfung.}
 
+\exam{Objektserialisierung}{Kommt an der Prüfung.}
 
 
+\ch{Interprozesskommunikation}
+
+\sse{Internetprotokoll}
+\ul
+	\li UDP: Messagebasiert
+	\li TCP: Zweiwegkommunikation
+	\li Multicast: Adressieren von Gruppen \\
+		Multicast ist sehr unzuverlässig
+\ulE
+
+\sse{Sockets}
+\ul
+	\li Temporäres File, im Hintergrund angelegt
+	\li Fehlerbehandlung bei Timeouts / Blocking
+	\li Möglichkeiten zur Wiederverwendung
+	\li Bei Java und VSS immer zwei Verbindungen: eine für Garbage Collection (überprüfen, was noch lebt) und eine für Trafic
+\ulE
+
+\sse{Synchron/Asynchron}
+\ul
+	\li synchron: send() und receive() sind blockierend
+	\li asynchron: receive() kann blockierend oder nicht blockierend sein
+\ulE
+
+\sse{Anforderung}
+\ul
+	\li Zuverlässige Verbindung
+	\li  Die Paketreihenfolge bei Empfänger und Sender müssen (idealerweise) gleich sein.
+		\ul
+			\li  Im Falle von TCP wird dies garantiert
+(verbindungsorientierte Kommunikation
+[mit ACK, also mit Overhead]).
+			\li Im Falle von UDP kann nicht davon ausgegangen werden
+(verbindungslose Kommunikation
+[ohne ACK, also weniger Overhead]).
+		\ulE
+\ulE
+	
+\sse{Adressierung}
+\ul
+	\li URL: Adresse
+	\li URN: Resource Name
+	\li URI: Resource Identifier
+\ulE
+\begin{verbatim}
+URI(String scheme, String userInfo, String host, int port, String path, String query, String fragment)
+URL ( String protocol, String host, int port, String file, URLStreamHandler handler)
+ 
+\end{verbatim}
+
+\sse{InetAddr}
+Kann man nicht setzen, weil IP Adresse vom Netz vergeben wird (dhcp) oder durch den Sysadmin fix festgelegt wurde.
+
+\sse{Sockets und Ports}
+\img{img/v2.1.jpg}{}{0.75}{}
+Ports sind Protokollgebunden
+
+\exam{UDP/TCP Gateway}
+\img{img/v2.2.jpg}{}{0.75}{}
+
+\exam{Ping mit einem andern Protokoll umsetzen}
+
+\sse{IP}
+\ul
+	\li verbindungslos
+	\li End-zu-End übertragung
+	\li Best Effort
+	\li Fehlermodell: Paketverlust, Duplikate, vertauschte Reihenfolge \\
+		Fehler in tieferen Layern treten auch in IP auf
+\ulE
+
+\se{UDP Sockets}
+Klasse: DatagramPacket, DatagramSocket \\
+Methoden: send(DatagramPacket), receive(DatagramPacket)
+
+\ul
+	\li Receive/Send in Threads trennen, damit sich die nicht stören.
+	\li Fehlermodell: Nachricht wird verworfen, Nachricht geht verloren, Reihenfolge nicht garantiert
+	\li Applikation muss sicherstellen, dass Pakete korrekt und in Reihenfolge ankommen
+\ulE
+\img{img/v2.3.jpg}{Struktur eines UDP Programms}{0.75}{}
+
+\sss{Datagramaufbau}
+\ul
+	\li Die Adresse Absenders / Die Adresse des Empfängers
+ 	\li Die Länge der Nachricht
+ 	\li Die Daten
+ 	\li Den remote Port.
+\ulE
+
+Absenderadresse kann nicht gesetzt werden.
+\img{img/v2.4.jpg}{UDP Sender}{1}{}
+\img{img/v2.5.jpg}{UDP Empfänger}{1}{}
+
+\se{TCP}
+\ul
+	\li retransmit bei verlorenen
+	\li ServerSocket: passiv, erwartet Verbindungsanfragen
+	\li Socket: aktiv, wird vom Client genutzt
+\ulE
+\img{img/v2.6.jpg}{}{0.75}{}
+\img{img/v2.7.jpg}{Server Socket multithreaded Beispiel}{1}{}
+\img{img/v2.8.jpg}{Socket Client}{1}{}
+
+\expl{Java Sockets}{Java Sockets sind nur eine Schicht für die Netzwerk Libraries des Betriebsystems. Im Hintergrund werden die Lib's geladen und verwendet.}
+
+\se{Gruppenkommunikation}
+\exam{Gruppenkommunikation Kommt eine Prüfungsaufgabe}
+\ul
+	\li basiert oft auf Multicasting (1:n Kommunikation)
+	\li Herausfinden, wer in Multicastgruppe ist: Ping, ist aber unzuverlässig
+	\li jGroups läuft über TCP\\
+		join() und leave() zum beitreten und verlassen
+\ulE
+\img{img/v2.9.jpg}{}{0.25}{}
+\img{img/v2.10.jpg}{IP Multicast}{0.75}{}
+\img{img/v2.11.jpg}{IP Multicast}{1}{}
 
 
+\se{Intern/Extern}
+\img{img/v2.12.jpg}{}{0.75}{}
+Probleme mit interner Datendarstellung \ra Verwendung einer externen Darstellung
+
+\sse{Java Objektserialisierung}
+\img{img/v2.13.jpg}{}{1}{}
+\ul
+	\li einfach
+	\li private attribute einsehbar! \ra Kennzeichnungspflicht
+\ulE
+
+\sss{Interfaces}
+\img{img/v2.14.jpg}{}{1}{}
+\img{img/v2.15.jpg}{}{0.75}{}
+
+\sss{Probleme}
+\ul
+	\li Objektserialisierer schaut nach, ob Referenzen gleich sind. Hat man in der zwischenzeit etwas geändert, wird das schon geschrieben Objekt im Stream ohne die Änderungen nochmals verwendet. \ra writeReplace() verwenden
+	\li Transient Attribute nicht serialisierbar
+	\li Childklassen von deriaisierbaren Klassen sind automatisch auch serialisierbar. Kann jedoch abgemurkst werden.
+\ulE
+
+\sss{Java2XML}
+\img{img/v2.16.jpg}{Java 2 XML}{1}{}
+\img{img/v2.17.jpg}{}{1}{}
+
+\sse{Referenzierung von externen Objekten}
+\ul
+	\li Objektreferenz muss in VSS eindeutig sein
+	\li Referenzen dürfen nicht wiederverwendet werden
+	
+\ulE
+\exam{Sockets genau anschauen, sind Prüfungsrelevant}
 
 \end{document}
