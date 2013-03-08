@@ -453,4 +453,107 @@ Probleme mit interner Datendarstellung \ra Verwendung einer externen Darstellung
 \ulE
 \exam{Sockets genau anschauen, sind Prüfungsrelevant}
 
+
+\ch{Verteilte Objekte und entfernte Aufrufe}
+\se{RRA Protokol}
+\img{img/v3.1.jpg}{}{0.75}{}
+\ul
+	\li Client wartet bis Antwort da ist
+	\li Fehlermodell: 
+		\ul
+			\li Server kann überlastet oder down sein, Dienstverweigerung \\
+				\ul
+					\li Arbeiten mit Timeouts
+					\li Mehrfacher Requestversuch \ra Problem mit mehrfacher Antwort
+				\ulE
+			\li Kommandreihenfolge kann durcheinander geraten
+			\li Mehrfache Antwort \ra Server könnte History führen
+			\li Nachrichten können verloren gehen \ra Server sendet Nachricht nochmal
+		\ulE
+\ulE
+\img{img/v3.2.jpg}{}{0.75}{}
+
+\sse{Aufrufsemantik}
+\img{img/v3.3.jpg}{}{0.75}{}
+
+\sss{At least once}
+Mit Sicherheit eine Antwort, es können jedoch mehrere verschiedene Antworten vorliegen
+\img{img/v3.4.jpg}{At least once Semantik}{0.75}{}
+
+\sss{At most once}
+Requests werden gespeichert, Immer gleiches Resultat
+\img{img/v3.5.jpg}{}{0.75}{}
+
+\sss{Fehlersemantik}
+\img{img/v3.6.jpg}{}{0.75}{}
+
+\sse{RRA Kombinationen}
+\ul
+	\li R: Request \\ Der Client sendet eine Anfrage an den Server (und verändert damit
+u.U. dessen Zustand).
+	\li RR: Request / Reply\\Der Client erhält eine Antwort auf seine Anfrage, aber bestätigt den
+Empfang nicht.\\Beispiel: GET /index.html im HTTP Protokoll.
+	 \li RRA: Request / Reply / Acknowledge\\In diesem Fall sendet der Client eine Empfangsbestätigung an den
+Server.
+\ulE
+
+\se{Remote Proceure Call}
+\ul
+	\li Service wird hinter Interface versteckt (Remote Interface) \\
+	\ra Interface muss für Client und Server gemeinsam sein.
+	\li Remote Zugriff auf lokale Variablen nicht sinnvoll \ra unterschiedliche Adressen
+	\li Call bei value empfehlenswert, Call bei Reference problematisch\\
+	\ra Gemeinsam genutzte Objekte könnten Call by Reference ermöglichen
+\ulE
+
+\sse{Remote Schnittstelle IDL}
+\img{img/v3.7.jpg}{Corba IDL}{0.75}{}
+\ul
+	\li Analog Programmiersprache aufgebaut
+\ulE
+
+\examp{Sun RPC}{
+	\ul
+		\li Bind Service
+		\li Programme werden durchnummeriert
+	\ulE
+	\img{img/v3.8.jpg}{}{0.75}{}
+}
+
+\img{img/v3.9.jpg}{}{0.75}{}
+\img{img/v3.10.jpg}{RPC}{0.75}{}
+\img{img/v3.11.jpg}{CORBA - Zweimal RPC: Client-Broker und Broker-Server}{0.75}{}
+
+\se{RMI}
+\ul
+	\li Methode ist es ansehbar, ob sie lokal oder remote ist
+	\li 
+\ulE
+\img{img/v3.12.jpg}{Verteiltes System}{0.75}{}
+\img{img/v3.13.jpg}{Unterschied Prozedur und Methode}{0.75}{}
+\img{img/v3.14.jpg}{}{0.75}{}
+\img{img/v3.15.jpg}{}{0.75}{}
+
+\sse{RMI Java Beispiel}
+\img{img/v3.16.jpg}{Remote Interface Beispiel}{0.75}{}
+\img{img/v3.17.jpg}{Aufbau Server Infrastruktur}{0.5}{}
+\img{img/v3.18.jpg}{Remote Service}{0.75}{}
+\exam{Warum beendet sich der Server nicht gleich selbst, obwohl er an der letzten Zeile angelangt ist? Durch den export wurde der Server an die Middleware gebunden. WIrd die Middleware gestoppt, stirbt der Server.}
+
+\expl{Remoting (Zusammenfassung)}{
+\ul
+	\li Aufrufe wie lokal aber als remote markiert
+	\li Kommunikation: Proxies
+	\li Namensdienst wird benötigt: Registry
+	\li Security sehr wichtig
+\ulE
+}
+
+
+
+
+
+
+
+
 \end{document}
