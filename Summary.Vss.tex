@@ -549,6 +549,50 @@ Server.
 \ulE
 }
 
+\se{RMI Details}
+\expl{Registry}{Stirbt die Registry zwischen dem Lookup und dem Aufruf der Remote Procedure, so passiert nichts, weil der Client den Proxy bereits erstellt hat. Startet man anschliessend die Registry neu, so muss man den Server auch neu starten, damit er sich wieder einträgt. \ra RMI Registry ist nicht restartfähig weil Hashtabelle nur im Memory abgelegt wird.}
+
+\img{img/v4.1.jpg}{}{0.75}{}
+
+\expl{Connection Refused}{Typische Socket Fehlermeldung. Desto tiefer im Stack die Fehlermeldung, desto kryptischer ist sie.}
+
+\img{img/v4.2.jpg}{}{0.75}{}
+\img{img/v4.3.jpg}{Client kommuniziert mit Proxy wie mit einem normalen lokalen Objekt. Der Proxy übernimmt den Rest (Remote call, Garbage Collection, ...)}{0.75}{}
+\img{img/v4.4.jpg}{}{1}{}
+
+\expl{Dispatcher}{Dispatcher ist dafür verantwortlich, dass die Calls entsprechend verteilt werden.
+	\ol
+		\li Gesendet wird nummer von Operation. Server entscheidet mit switch anhand Nummer, welche Operation Ausgeführt wird. 
+		\li Server holt Parameter aus Inputstream, schliesst diesen. 
+		\li Server Ruft Methode mit Parameter auf. Server holt vom Call einen Resultstream und schreibt das Resultat zurück.
+	\olE
+}
+
+\ul
+	\li Durch das Serialisieren eines Objektes und Versenden wird bereits automatisch Call bei Value gemacht (weil Kopie).
+\ulE
+\img{img/v4.5.jpg}{Codebase muss auf Interface, nicht auf KLasse verweisen}{0.75}{}
+\important{EIn auf dem Server geändertes Objekt wird nicht automatisch an den Client zurückgesendet!}
+
+\expl{Call by Reference}{Client auch als Parameter mitgeben, damit der Server auf dem Client entsprechende Methoden ausführen kann.}
+\img{img/v4.6.jpg}{}{0.75}{}
+
+
+\se{Dynamic Class Loading}
+\img{img/v4.7.jpg}{}{0.75}{}
+\img{img/v4.8.jpg}{Interface wird auf Server geladen und Client sowie Server laden es herunter. Zum Compilieren muss das Interface allerdings lokal verfügbar sein.}{0.75}{}
+
+\se{RMI Server schlafen legen}
+\ul
+	\li Server kann schlafen elegt werden. Aktivierungsklasse (Daemon) weckt den RMI Server.
+	\li Anfrage von Client geht an Server (im Hintergrund an Daemon), Daemon weckt Server, führt Anfrage aus, Server geht anschliessend wieder schlafen
+\ulE
+
+\exam{RMI Spezifikation überfliegen}
+
+
+
+
 
 
 
