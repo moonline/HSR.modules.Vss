@@ -732,16 +732,87 @@ Probleme bei Verteilten Dateisystemen: Replikation, Caching, Objekt-Persistenz
 
 
 \se{Hadoop Distributed Filesystem HDFS}
+\sse{Wichtige Entwurfsaspekte}
+\uli{
+	\li Effiziente Nutzung des Client- Cachings
+	\li Leistung vergleichbar mit lokalen Dateisystemen.
+	\li Konsistenzwahrung.
+	\li Wiederherstellung bei Abstürzen und Ausfällen.
+	\li Hoher Durchsatz.
+	\li Skalierbarkeit.
+}
+\sse{Hadoop Eigenschaften}
 \uli{
 	\li Dateigrösse sind im Giga- / Tera- / Petabyte Bereich.
 	\li Streaming: Write Once, Read Many
+	\li Grosse Blöcke (bis 128 MB)
+	\li Minimierung von Transfers (lokal anfallende Daten werden lokal behandelt)
+	\li Berechnungen geschehen da, wo die Daten sind
+	\li Task arbeiten mit so wenigen Blöcken wie möglich
+	\li Wenn ein Node ausfällt, wird die Aufgabe delegiert
+}
+\img{img/v7.1.jpg}{Hadoop Anforderungen}{0.75}{}
+
+\img{img/v7.2.jpg}{Map Reduce}{0.75}{}
+\img{img/v7.3.jpg}{Reduce}{0.75}{}
+
+\uli{
+	\li Hadoop verwendet die darunter liegenden Dateisysteme
+	\li Master/Slave Architektur
+}
+\img{img/v7.4.jpg}{Datenzugriff}{0.75}{}
+\img{img/v7.5.jpg}{Reduce am Beispiel Word Count}{0.75}{}
+
+\sse{Hadoop Architektur}
+\img{img/v7.6.jpg}{}{0.75}{}
+\img{img/v7.7.jpg}{Cluster Infrastructure}{0.75}{}
+\exam{Hadoop Beispiel könnte 1:1 an der Prüfung kommen. Mehr über Dateisysteme wird wohl nicht an der Prüfung kommen.}
+
+\ch{Namensdienste}
+\exam{LDAP kommt konkret an der Prüfung}
+\uli{
+	\li Namen gestatten Zugriff auf Objekte
+	\li Context beschreibt Hirarche (Bsp .ch bei DNS)
+	\li Verzeichnisdienst ist erweiterung des Namensdienstes
+}
+\img{img/v7.8.jpg}{}{0.75}{}
+\img{img/v7.9.jpg}{}{0.75}{}
+\sse{Anforderungen Verzeichnisdienste}
+\uli{
+	\li Verwalten einer grossen Zahl von Namen
+	\li Lange Lebensdauer des Dienstes
+	\li Hohe Verfügbarkeit.
+	\li Isolierung von Fehlern. \\Ein Fehler darf sich nicht global auswirken
+	\li Tolerierung von Misstrauen: \\in komplexen Netzwerken (Beispiel Internet) sind nicht alle Teilnehmer bekannt. Es muss also mit Misstrauen gerechnet werden, weil nicht
+alle alles kennen können.
 }
 
+\se{Namesauflösung}
+\expl{Iterative Namensauflösung}{Client ruft einer nach dem Andern auf}
+\expl{Rekursive Namensauflöung}{Client ruft einer auf, dieser ruft andere auf, wenn er es nicht weis}
+
+\img{img/v7.10.jpg}{}{0.75}{}
+
+\sse{Discovery und Directory Service}
+\img{img/v7.11.jpg}{}{0.75}{}
+
+\se{LDAP}
+\img{img/v7.12.jpg}{}{0.75}{}
+\img{img/v7.13.jpg}{}{0.75}{}
+
+\uli{
+	\li Suchen muss schnell sein
+	\li Eintragen, modifizieren und löschen müssen nicht so schnell seins
+}
+
+\img{img/v7.14.jpg}{Namensauflösung}{0.75}{}
+\img{img/v7.15.jpg}{Schema}{0.75}{}
+
+\img{img/v7.16.jpg}{LDAP logisches Modell}{0.75}{}
 
 
-
-
-
+\se{JNDI Java Naming and Directory Interface API}
+\img{img/v7.17.jpg}{}{0.75}{}
 
 
 
