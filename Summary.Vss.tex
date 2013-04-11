@@ -809,12 +809,89 @@ alle alles kennen können.
 \img{img/v7.15.jpg}{Schema}{0.75}{}
 
 \img{img/v7.16.jpg}{LDAP logisches Modell}{0.75}{}
-
+\exam{LDAP Übungsbeispiel kommt an Prüfung. LDAP Struktur verstehen und definieren können}
 
 \se{JNDI Java Naming and Directory Interface API}
 \img{img/v7.17.jpg}{}{0.75}{}
 
 
+\ch{P2P}
+\uli{
+	\li Grosse Anzahl Teilnehmer
+	\li Teilnehmer oft nicht ausgelastet
+	\li Daten und Ressourcen werden möglichst redundant verteilt
+	\li sollte selbstorganisierend sein
+	\li Kein zentrale Zugriffskontrolle, Backup, etc.
+	\li Jeder Knoten ist gleichberechtigt, kein hirarchischer Aufbau
+	\li Hauptherausforderung: Zusammenschliessen des ganzen, o(n) zu durchbrechen
+	\li muss immer verfügbar sein
+}
+\img{img/v8.1.jpg}{Client/Server vs P2P}{0.75}{}
+\sse{Vorteile}
+\uli{
+	\li Robustheit
+	\li dynamische Reorganisation
+}
+
+\sse{Probleme}
+\uli{
+	\li Aufbau von solchen Netzen
+	\li Wiederauffinden von Informationen, weil sich das Netz dauernd ändert
+}
+
+\sse{Aufgaben}
+\uli{
+	\li Ressourcen müssen global eindeutig gekennzeichnet sein
+	\li Speichern von verteilte Objekten
+}
+\sse{Overlay Routing}
+\img{img/v8.2.jpg}{IP vs Overlay Routing}{0.75}{}
+
+\expl{Schlüsselproblem P2P}{Effizienter Zugriff auf die gewünschten Daten}
+
+\se{Routing Overlay}
+\uli{
+	\li steht weit über IP
+	\li Kombination mehrere Schemen
+	\li Jeder Knoten kann auf jedes Informationsobjekt zugreifen
+	\li Jeder Knoten enthält Informationen über die redundant abgelegten Objekte
+}
+\img{img/v8.3.jpg}{Routing Problem}{0.75}{}
+
+\sse{Operationen}
+\uli{
+	\li Informationen einfügen
+	\li Informationen abfragen
+	\li Informationen löschen
+}
+\img{img/v8.4.jpg}{}{0.75}{}
+\img{img/v8.5.jpg}{}{0.75}{}
+
+\se{Pastry, Tapstry}
+\uli{
+	\li Jeder Knoten besitzt leaf set (Nachbarn)
+	\li App wird benachrichtigt, falls neue Nachbarn erreichbar sind oder wegfallen
+}
+
+\img{img/v8.6.jpg}{Zirkuläres Routing - korrekt aber ineffizient}{0.75}{}
+\img{img/v8.7.jpg}{Pastry Routing - nicht sehr effizient}{0.75}{}
+\img{img/v8.8.jpg}{Pastry Node State}{0.75}{}
+\img{img/v8.9.jpg}{Pastr Routing Algorithmus}{0.75}{}
+\img{img/v8.10.jpg}{Beispiel}{0.75}{}
+
+
+\se{Verteiltes Hashing DHT}
+\img{img/v8.11.jpg}{}{0.75}{}
+\img{img/v8.12.jpg}{DHT Factoring}{0.75}{}
+
+\sse{Lookup}
+\img{img/v8.13.jpg}{Lookup problem}{0.75}{}
+\img{img/v8.14.jpg}{Basic Lookup}{0.75}{}
+
+\sse{Finger Table}
+\img{img/v8.15.jpg}{}{0.75}{}
+\img{img/v8.16.jpg}{}{0.75}{}
+\img{img/v8.17.jpg}{O(log(N))}{0.75}{}
 
 
 
@@ -825,6 +902,8 @@ alle alles kennen können.
 
 
 
+
+ 
 
 
 \end{document}
