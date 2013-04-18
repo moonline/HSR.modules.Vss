@@ -313,7 +313,36 @@ urlcolor=black
 }
 
 
+\ch{Zeit und globale Zustände}
+\se{Zeit}
+\olp{
+	\li Was ist Zeit? Welche Bedeutung hat Zeit in einem Informatiksystem? Was passiert, wenn unterschiedliche Applikationen/Dienste unterschiedliche Zeiten haben?
+	\li Warum sind Transaktionen auf einen konsistente Zeittaktung angewiesen?
+	\li Wie ist der Zustand eines Prozesses definiert?
+	\li Abb. \ref{proNaAt}: Erklären Sie anhand der Abbildung, was Ereignisse und Messages sind und welchen Einfluss die Laufzeit der Meldungen zwischen den Prozessen auf den Betrieb hat.
+		\img{img/v9.1.jpg}{}{0.75}{proNaAt}
+	\li Erklären Sie den Unterschied zwischen physischer und logischer Uhr.
+	\li Warum darf beim Synchronisieren von Zeit niemals eine Komponente rückwärtskorrigiert werden?
+	\li Erklären Sie das Konzept der logischen Uhr. Welche Eigenschaften hat die logische Uhr.
+	\li Warum ist in verteilten Systemen eine exakte Zeitsynchronisation nicht möglich?
+	\li Erklären Sie den Lamport Algorithmus.
+	\li Machen Sie ein Beispiel mit dem Lamport Algorithmus mit vier unabhänigen Prozessen.
+	\li Welches grundsätzliche Problem besitzt die Lamport Zeit?
+	\li Erklären Sie die Vektorzeit. Inwiefern löst sie das Problem der Lamport Zeit?
+	\li Wie ermitteln Sie bei der Vektorzeit die effektive Zeit bei einem Prozess? Erklären Sie genau: Was passiert bei der Lamportzeit und bei der Vektorzeit jeweils bei den folgenden Ereignissen: Initialisierung, lokales Ereignis, Sendeereignis, Empfangsereignis.
+	\li Warum ist die Vektorzeit ireflexiv, asymetrisch und transitiv?
+	\li Liefert die Vektorzeit mehr Informationen über zeitliche Zusammenhänge als die Lamport Zeit?
+}
 
+\se{globale Zustände}
+\olp{
+	\li Nennen Sie einige Anwendungsfälle, bei denen ein globaler Zustand entscheidend ist.
+	\li Wie ist die History eines Prozesses definiert.
+	\li Was ist ein konsistenter Schnitt?
+	\li Erklären Sie den Snapshotalgorithmus von Chandy und Lamport.
+	\li Welche Bedingungen muss ein Kanal erfüllen?
+	\li Warum ist der globale konsistente Zustand mit keinem lokalen Zustand identisch, aber trotzdem konsistent?
+}
 
 
 

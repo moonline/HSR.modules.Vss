@@ -895,14 +895,91 @@ alle alles kennen können.
 
 
 
+\ch{Zeit und globale Zustände}
+\se{Logische Uhr}
+\expl{globale Uhr}{in Verteilten Systemen gibt es keine globale Uhr!}
+\expl{logische Uhr}{Definierung der Zeit aufgrund einer Abfolge von physischen Abfolgen}
+\img{img/v9.1.jpg}{Prozessnachrichtendiagramm, p:Prozess, e: Ereignis, m: Message}{0.75}{}
+\exam{Prozessnachrichtendiagramm kommt an Prüfung ganz sicher}
+\uli{
+	\li Historie für jeden Prozess ist die Menge seiner Ereignisse
+	\li $history(p_i)=(e_i^0, e_i^1, e_i^2, ...)$
 
+}
+\exam{Physische Zeit ist nicht prüfungsrelevant, Aufgabe mit logischer Zeit kommt eine Aufgabe an Prüfung}
+\important{Zeit darf nie zurückgestellt werden! \ra Datenbanken, etc. crashen, Message Chaos vorprogrammiert}
+\uli{
+	\li Logische Zeit: Keine fest definierte Zeit, nur Ereignisreihenfolge
+	\li ``Happend Before'' Beziehung definiert Zeit: \img{img/v9.2.jpg}{}{0.75}{}
+	\li Senden muss immer vor dem Empfangen geschehen!
+}
+\img{img/v9.3.jpg}{Formale Definition der Relation}{0.8}{}
+\img{img/v9.4.jpg}{}{0.8}{}
+\uli{
+	\li Initialisierung der Zeit mit 1
+	\li Lokals Ereignis inkrementiert Zeit
+	\li Beim Senden wird Zeit mitgeschickt
+	\li Beim Empfangen wird max(Lokalen, Empfangenen Zeit) + 1 genommen
+	\li Gerechnet wird immer nur vorwärts (Halbordnung)
+}
+\img{img/v9.5.jpg}{Beispiel Lamport Zeit}{0.75}{}
+\uli{
+	\li	aus a->b folgt C(a)->C(b)
+	\li ABER: aus C(a)->C(b) folgt NICHT a->b
+	\li Rückschlüsse sind nicht möglich
+}
+ 
+\sse{Vectorclock}
+\uli{
+	\li Jeder Prozess hält Vektor mit Zeiten der andern Prozessen und des eigenen
+	\li Problem, dass man nicht weis, wie viele Prozesse / aktive Komponenten in einem System vorhanden sind
+	\li Praktisch alle Datenbanken locken basierend auf Lamport Zeit
+	\li Beim Empfang wird das Maximum, nicht das Max+1 genommen
+}
+\img{img/v9.6.jpg}{Vectorclock}{0.75}{}
+\definition{Vectorclock}{\img{img/v9.7.jpg}{Vectorclock}{0.75}{}}
 
+\img{img/v9.8.jpg}{Vectorclock Algorithmus. Tipp: als erstes für jeden Prozess für jeden Punkt seine Vektorposition durchnummerieren}{0.75}{}
 
+\exam{Typische Prüfungsaufgabe \img{img/v9.9.jpg}{Vectorclock}{0.75}{}}
+ 
+ 
+\se{Globale Zustände}
+\uli{
+	\li Besteht aus Prozess und Kanalzustand
+	\li Die Aktualisierungsnachrichten von zwei Zuständen können sich überschneiden \ra inkonsistenter Zustand
+	\li Markernachrichten werden durch das ganze System durchgeschickt und mit dem lokalen Zustand weitergeschickt 
+	\li Zustand ist konsistent weil der Sender eine Bestätigung erhält
+		\img{img/v9.11.jpg}{Es werden nur Ereignisse berücksichtigt werden, die eine kausale Abhängigkeit besitzen}{0.75}{}
+	\li Selbst wenn sich der Zustand von p1 nach dem Bekanntgeben seines aktuellen Zustandes ändern, werden diese Änderungen ignoriert und der Zustand ist eingefroren bis die Änderung bestätigt wird
+	\li Der Logische Zustand entspricht nie dem Physischen Zustand!
+	\li Kanäle sind FIFO und unidirektional
+}
+\img{img/v9.10.jpg}{Abgleich eines globalen Zustandes zwischen zwei Prozessen}{0.75}{}
+\img{img/v9.14.jpg}{Algorithmus zum Finden eines globalen Zustandes}{0.75}{}
+ 
+\img{img/v9.12.jpg}{}{0.75}{}
+\img{img/v9.13.jpg}{}{0.75}{}
+ 
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 
-
-
-
+ 
  
 
 
