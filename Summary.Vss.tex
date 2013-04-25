@@ -769,218 +769,320 @@ Probleme bei Verteilten Dateisystemen: Replikation, Caching, Objekt-Persistenz
 \exam{Hadoop Beispiel könnte 1:1 an der Prüfung kommen. Mehr über Dateisysteme wird wohl nicht an der Prüfung kommen.}
 
 \ch{Namensdienste}
-\exam{LDAP kommt konkret an der Prüfung}
-\uli{
-	\li Namen gestatten Zugriff auf Objekte
-	\li Context beschreibt Hirarche (Bsp .ch bei DNS)
-	\li Verzeichnisdienst ist erweiterung des Namensdienstes
-}
-\img{img/v7.8.jpg}{}{0.75}{}
-\img{img/v7.9.jpg}{}{0.75}{}
-\sse{Anforderungen Verzeichnisdienste}
-\uli{
-	\li Verwalten einer grossen Zahl von Namen
-	\li Lange Lebensdauer des Dienstes
-	\li Hohe Verfügbarkeit.
-	\li Isolierung von Fehlern. \\Ein Fehler darf sich nicht global auswirken
-	\li Tolerierung von Misstrauen: \\in komplexen Netzwerken (Beispiel Internet) sind nicht alle Teilnehmer bekannt. Es muss also mit Misstrauen gerechnet werden, weil nicht
-alle alles kennen können.
-}
+	\exam{LDAP kommt konkret an der Prüfung}
+	\uli{
+		\li Namen gestatten Zugriff auf Objekte
+		\li Context beschreibt Hirarche (Bsp .ch bei DNS)
+		\li Verzeichnisdienst ist erweiterung des Namensdienstes
+	}
+	\img{img/v7.8.jpg}{}{0.75}{}
+	\img{img/v7.9.jpg}{}{0.75}{}
+	
+		\sse{Anforderungen Verzeichnisdienste}
+			\uli{
+				\li Verwalten einer grossen Zahl von Namen
+				\li Lange Lebensdauer des Dienstes
+				\li Hohe Verfügbarkeit.
+				\li Isolierung von Fehlern. \\Ein Fehler darf sich nicht global auswirken
+				\li Tolerierung von Misstrauen: \\in komplexen Netzwerken (Beispiel Internet) sind nicht alle Teilnehmer bekannt. Es muss also mit Misstrauen gerechnet werden, weil nicht
+			alle alles kennen können.
+			}
 
-\se{Namesauflösung}
-\expl{Iterative Namensauflösung}{Client ruft einer nach dem Andern auf}
-\expl{Rekursive Namensauflöung}{Client ruft einer auf, dieser ruft andere auf, wenn er es nicht weis}
+	\se{Namesauflösung}
+		\expl{Iterative Namensauflösung}{Client ruft einer nach dem Andern auf}
+		\expl{Rekursive Namensauflöung}{Client ruft einer auf, dieser ruft andere auf, wenn er es nicht weis}
 
-\img{img/v7.10.jpg}{}{0.75}{}
+		\img{img/v7.10.jpg}{}{0.75}{}
 
-\sse{Discovery und Directory Service}
-\img{img/v7.11.jpg}{}{0.75}{}
+		\sse{Discovery und Directory Service}
+			\img{img/v7.11.jpg}{}{0.75}{}
 
-\se{LDAP}
-\img{img/v7.12.jpg}{}{0.75}{}
-\img{img/v7.13.jpg}{}{0.75}{}
+	\se{LDAP}
+		\img{img/v7.12.jpg}{}{0.75}{}
+		\img{img/v7.13.jpg}{}{0.75}{}
 
-\uli{
-	\li Suchen muss schnell sein
-	\li Eintragen, modifizieren und löschen müssen nicht so schnell seins
-}
+		\uli{
+			\li Suchen muss schnell sein
+			\li Eintragen, modifizieren und löschen müssen nicht so schnell seins
+		}
 
-\img{img/v7.14.jpg}{Namensauflösung}{0.75}{}
-\img{img/v7.15.jpg}{Schema}{0.75}{}
+		\img{img/v7.14.jpg}{Namensauflösung}{0.75}{}
+		\img{img/v7.15.jpg}{Schema}{0.75}{}
 
-\img{img/v7.16.jpg}{LDAP logisches Modell}{0.75}{}
-\exam{LDAP Übungsbeispiel kommt an Prüfung. LDAP Struktur verstehen und definieren können}
+		\img{img/v7.16.jpg}{LDAP logisches Modell}{0.75}{}
+		\exam{LDAP Übungsbeispiel kommt an Prüfung. LDAP Struktur verstehen und definieren können}
 
-\se{JNDI Java Naming and Directory Interface API}
-\img{img/v7.17.jpg}{}{0.75}{}
+	\se{JNDI Java Naming and Directory Interface API}
+		\img{img/v7.17.jpg}{}{0.75}{}
 
 
 \ch{P2P}
-\uli{
-	\li Grosse Anzahl Teilnehmer
-	\li Teilnehmer oft nicht ausgelastet
-	\li Daten und Ressourcen werden möglichst redundant verteilt
-	\li sollte selbstorganisierend sein
-	\li Kein zentrale Zugriffskontrolle, Backup, etc.
-	\li Jeder Knoten ist gleichberechtigt, kein hirarchischer Aufbau
-	\li Hauptherausforderung: Zusammenschliessen des ganzen, o(n) zu durchbrechen
-	\li muss immer verfügbar sein
-}
-\img{img/v8.1.jpg}{Client/Server vs P2P}{0.75}{}
-\sse{Vorteile}
-\uli{
-	\li Robustheit
-	\li dynamische Reorganisation
-}
+	\uli{
+		\li Grosse Anzahl Teilnehmer
+		\li Teilnehmer oft nicht ausgelastet
+		\li Daten und Ressourcen werden möglichst redundant verteilt
+		\li sollte selbstorganisierend sein
+		\li Kein zentrale Zugriffskontrolle, Backup, etc.
+		\li Jeder Knoten ist gleichberechtigt, kein hirarchischer Aufbau
+		\li Hauptherausforderung: Zusammenschliessen des ganzen, o(n) zu durchbrechen
+		\li muss immer verfügbar sein
+	}
+	\img{img/v8.1.jpg}{Client/Server vs P2P}{0.75}{}
+	
+		\sse{Vorteile}
+			\uli{
+				\li Robustheit
+				\li dynamische Reorganisation
+			}
 
-\sse{Probleme}
-\uli{
-	\li Aufbau von solchen Netzen
-	\li Wiederauffinden von Informationen, weil sich das Netz dauernd ändert
-}
+		\sse{Probleme}
+			\uli{
+				\li Aufbau von solchen Netzen
+				\li Wiederauffinden von Informationen, weil sich das Netz dauernd ändert
+			}
 
-\sse{Aufgaben}
-\uli{
-	\li Ressourcen müssen global eindeutig gekennzeichnet sein
-	\li Speichern von verteilte Objekten
-}
-\sse{Overlay Routing}
-\img{img/v8.2.jpg}{IP vs Overlay Routing}{0.75}{}
+		\sse{Aufgaben}
+			\uli{
+				\li Ressourcen müssen global eindeutig gekennzeichnet sein
+				\li Speichern von verteilte Objekten
+			}
+		\sse{Overlay Routing}
+			\img{img/v8.2.jpg}{IP vs Overlay Routing}{0.75}{}
 
-\expl{Schlüsselproblem P2P}{Effizienter Zugriff auf die gewünschten Daten}
+			\expl{Schlüsselproblem P2P}{Effizienter Zugriff auf die gewünschten Daten}
 
-\se{Routing Overlay}
-\uli{
-	\li steht weit über IP
-	\li Kombination mehrere Schemen
-	\li Jeder Knoten kann auf jedes Informationsobjekt zugreifen
-	\li Jeder Knoten enthält Informationen über die redundant abgelegten Objekte
-}
-\img{img/v8.3.jpg}{Routing Problem}{0.75}{}
+	\se{Routing Overlay}
+		\uli{
+			\li steht weit über IP
+			\li Kombination mehrere Schemen
+			\li Jeder Knoten kann auf jedes Informationsobjekt zugreifen
+			\li Jeder Knoten enthält Informationen über die redundant abgelegten Objekte
+		}
+		\img{img/v8.3.jpg}{Routing Problem}{0.75}{}
 
-\sse{Operationen}
-\uli{
-	\li Informationen einfügen
-	\li Informationen abfragen
-	\li Informationen löschen
-}
-\img{img/v8.4.jpg}{}{0.75}{}
-\img{img/v8.5.jpg}{}{0.75}{}
+		\sse{Operationen}
+			\uli{
+				\li Informationen einfügen
+				\li Informationen abfragen
+				\li Informationen löschen
+			}
+			\img{img/v8.4.jpg}{}{0.75}{}
+			\img{img/v8.5.jpg}{}{0.75}{}
 
-\se{Pastry, Tapstry}
-\uli{
-	\li Jeder Knoten besitzt leaf set (Nachbarn)
-	\li App wird benachrichtigt, falls neue Nachbarn erreichbar sind oder wegfallen
-}
+	\se{Pastry, Tapstry}
+		\uli{
+			\li Jeder Knoten besitzt leaf set (Nachbarn)
+			\li App wird benachrichtigt, falls neue Nachbarn erreichbar sind oder wegfallen
+		}
 
-\img{img/v8.6.jpg}{Zirkuläres Routing - korrekt aber ineffizient}{0.75}{}
-\img{img/v8.7.jpg}{Pastry Routing - nicht sehr effizient}{0.75}{}
-\img{img/v8.8.jpg}{Pastry Node State}{0.75}{}
-\img{img/v8.9.jpg}{Pastr Routing Algorithmus}{0.75}{}
-\img{img/v8.10.jpg}{Beispiel}{0.75}{}
+		\img{img/v8.6.jpg}{Zirkuläres Routing - korrekt aber ineffizient}{0.75}{}
+		\img{img/v8.7.jpg}{Pastry Routing - nicht sehr effizient}{0.75}{}
+		\img{img/v8.8.jpg}{Pastry Node State}{0.75}{}
+		\img{img/v8.9.jpg}{Pastr Routing Algorithmus}{0.75}{}
+		\img{img/v8.10.jpg}{Beispiel}{0.75}{}
 
 
-\se{Verteiltes Hashing DHT}
-\img{img/v8.11.jpg}{}{0.75}{}
-\img{img/v8.12.jpg}{DHT Factoring}{0.75}{}
+	\se{Verteiltes Hashing DHT}
+		\img{img/v8.11.jpg}{}{0.75}{}
+		\img{img/v8.12.jpg}{DHT Factoring}{0.75}{}
 
-\sse{Lookup}
-\img{img/v8.13.jpg}{Lookup problem}{0.75}{}
-\img{img/v8.14.jpg}{Basic Lookup}{0.75}{}
+		\sse{Lookup}
+			\img{img/v8.13.jpg}{Lookup problem}{0.75}{}
+			\img{img/v8.14.jpg}{Basic Lookup}{0.75}{}
 
-\sse{Finger Table}
-\img{img/v8.15.jpg}{}{0.75}{}
-\img{img/v8.16.jpg}{}{0.75}{}
-\img{img/v8.17.jpg}{O(log(N))}{0.75}{}
+			\sse{Finger Table}
+			\img{img/v8.15.jpg}{}{0.75}{}
+			\img{img/v8.16.jpg}{}{0.75}{}
+			\img{img/v8.17.jpg}{O(log(N))}{0.75}{}
 
 
 
 \ch{Zeit und globale Zustände}
-\se{Logische Uhr}
-\expl{globale Uhr}{in Verteilten Systemen gibt es keine globale Uhr!}
-\expl{logische Uhr}{Definierung der Zeit aufgrund einer Abfolge von physischen Abfolgen}
-\img{img/v9.1.jpg}{Prozessnachrichtendiagramm, p:Prozess, e: Ereignis, m: Message}{0.75}{}
-\exam{Prozessnachrichtendiagramm kommt an Prüfung ganz sicher}
-\uli{
-	\li Historie für jeden Prozess ist die Menge seiner Ereignisse
-	\li $history(p_i)=(e_i^0, e_i^1, e_i^2, ...)$
+	\se{Logische Uhr}
+		\expl{globale Uhr}{in Verteilten Systemen gibt es keine globale Uhr!}
+		\expl{logische Uhr}{Definierung der Zeit aufgrund einer Abfolge von physischen Abfolgen}
+		\img{img/v9.1.jpg}{Prozessnachrichtendiagramm, p:Prozess, e: Ereignis, m: Message}{0.75}{}
+		\exam{Prozessnachrichtendiagramm kommt an Prüfung ganz sicher}
+		\uli{
+			\li Historie für jeden Prozess ist die Menge seiner Ereignisse
+			\li $history(p_i)=(e_i^0, e_i^1, e_i^2, ...)$
 
-}
-\exam{Physische Zeit ist nicht prüfungsrelevant, Aufgabe mit logischer Zeit kommt eine Aufgabe an Prüfung}
-\important{Zeit darf nie zurückgestellt werden! \ra Datenbanken, etc. crashen, Message Chaos vorprogrammiert}
-\uli{
-	\li Logische Zeit: Keine fest definierte Zeit, nur Ereignisreihenfolge
-	\li ``Happend Before'' Beziehung definiert Zeit: \img{img/v9.2.jpg}{}{0.75}{}
-	\li Senden muss immer vor dem Empfangen geschehen!
-}
-\img{img/v9.3.jpg}{Formale Definition der Relation}{0.8}{}
-\img{img/v9.4.jpg}{}{0.8}{}
-\uli{
-	\li Initialisierung der Zeit mit 1
-	\li Lokals Ereignis inkrementiert Zeit
-	\li Beim Senden wird Zeit mitgeschickt
-	\li Beim Empfangen wird max(Lokalen, Empfangenen Zeit) + 1 genommen
-	\li Gerechnet wird immer nur vorwärts (Halbordnung)
-}
-\img{img/v9.5.jpg}{Beispiel Lamport Zeit}{0.75}{}
-\uli{
-	\li	aus a->b folgt C(a)->C(b)
-	\li ABER: aus C(a)->C(b) folgt NICHT a->b
-	\li Rückschlüsse sind nicht möglich
-}
+		}
+		\exam{Physische Zeit ist nicht prüfungsrelevant, Aufgabe mit logischer Zeit kommt eine Aufgabe an Prüfung}
+		\important{Zeit darf nie zurückgestellt werden! \ra Datenbanken, etc. crashen, Message Chaos vorprogrammiert}
+		\uli{
+			\li Logische Zeit: Keine fest definierte Zeit, nur Ereignisreihenfolge
+			\li ``Happend Before'' Beziehung definiert Zeit: \img{img/v9.2.jpg}{}{0.75}{}
+			\li Senden muss immer vor dem Empfangen geschehen!
+		}
+		\img{img/v9.3.jpg}{Formale Definition der Relation}{0.8}{}
+		\img{img/v9.4.jpg}{}{0.8}{}
+		\uli{
+			\li Initialisierung der Zeit mit 1
+			\li Lokals Ereignis inkrementiert Zeit
+			\li Beim Senden wird Zeit mitgeschickt
+			\li Beim Empfangen wird max(Lokalen, Empfangenen Zeit) + 1 genommen
+			\li Gerechnet wird immer nur vorwärts (Halbordnung)
+		}
+		\img{img/v9.5.jpg}{Beispiel Lamport Zeit}{0.75}{}
+		\uli{
+			\li	aus a->b folgt C(a)->C(b)
+			\li ABER: aus C(a)->C(b) folgt NICHT a->b
+			\li Rückschlüsse sind nicht möglich
+		}
  
-\sse{Vectorclock}
-\uli{
-	\li Jeder Prozess hält Vektor mit Zeiten der andern Prozessen und des eigenen
-	\li Problem, dass man nicht weis, wie viele Prozesse / aktive Komponenten in einem System vorhanden sind
-	\li Praktisch alle Datenbanken locken basierend auf Lamport Zeit
-	\li Beim Empfang wird das Maximum, nicht das Max+1 genommen
-}
-\img{img/v9.6.jpg}{Vectorclock}{0.75}{}
-\definition{Vectorclock}{\img{img/v9.7.jpg}{Vectorclock}{0.75}{}}
+		\sse{Vectorclock}
+			\uli{
+				\li Jeder Prozess hält Vektor mit Zeiten der andern Prozessen und des eigenen
+				\li Problem, dass man nicht weis, wie viele Prozesse / aktive Komponenten in einem System vorhanden sind
+				\li Praktisch alle Datenbanken locken basierend auf Lamport Zeit
+				\li Beim Empfang wird das Maximum, nicht das Max+1 genommen
+			}
+			\img{img/v9.6.jpg}{Vectorclock}{0.75}{}
+			\definition{Vectorclock}{\img{img/v9.7.jpg}{Vectorclock}{0.75}{}}
 
-\img{img/v9.8.jpg}{Vectorclock Algorithmus. Tipp: als erstes für jeden Prozess für jeden Punkt seine Vektorposition durchnummerieren}{0.75}{}
+			\img{img/v9.8.jpg}{Vectorclock Algorithmus. Tipp: als erstes für jeden Prozess für jeden Punkt seine Vektorposition durchnummerieren}{0.75}{}
 
-\exam{Typische Prüfungsaufgabe \img{img/v9.9.jpg}{Vectorclock}{0.75}{}}
+			\exam{Typische Prüfungsaufgabe \img{img/v9.9.jpg}{Vectorclock}{0.75}{}}
+		 
  
- 
-\se{Globale Zustände}
-\uli{
-	\li Besteht aus Prozess und Kanalzustand
-	\li Die Aktualisierungsnachrichten von zwei Zuständen können sich überschneiden \ra inkonsistenter Zustand
-	\li Markernachrichten werden durch das ganze System durchgeschickt und mit dem lokalen Zustand weitergeschickt 
-	\li Zustand ist konsistent weil der Sender eine Bestätigung erhält
-		\img{img/v9.11.jpg}{Es werden nur Ereignisse berücksichtigt werden, die eine kausale Abhängigkeit besitzen}{0.75}{}
-	\li Selbst wenn sich der Zustand von p1 nach dem Bekanntgeben seines aktuellen Zustandes ändern, werden diese Änderungen ignoriert und der Zustand ist eingefroren bis die Änderung bestätigt wird
-	\li Der Logische Zustand entspricht nie dem Physischen Zustand!
-	\li Kanäle sind FIFO und unidirektional
-}
-\img{img/v9.10.jpg}{Abgleich eines globalen Zustandes zwischen zwei Prozessen}{0.75}{}
-\img{img/v9.14.jpg}{Algorithmus zum Finden eines globalen Zustandes}{0.75}{}
- 
-\img{img/v9.12.jpg}{}{0.75}{}
-\img{img/v9.13.jpg}{}{0.75}{}
- 
+	\se{Globale Zustände}
+		\uli{
+			\li Besteht aus Prozess und Kanalzustand
+			\li Die Aktualisierungsnachrichten von zwei Zuständen können sich überschneiden \ra inkonsistenter Zustand
+			\li Markernachrichten werden durch das ganze System durchgeschickt und mit dem lokalen Zustand weitergeschickt 
+			\li Zustand ist konsistent weil der Sender eine Bestätigung erhält
+				\img{img/v9.11.jpg}{Es werden nur Ereignisse berücksichtigt werden, die eine kausale Abhängigkeit besitzen}{0.75}{}
+			\li Selbst wenn sich der Zustand von p1 nach dem Bekanntgeben seines aktuellen Zustandes ändern, werden diese Änderungen ignoriert und der Zustand ist eingefroren bis die Änderung bestätigt wird
+			\li Der Logische Zustand entspricht nie dem Physischen Zustand!
+			\li Kanäle sind FIFO und unidirektional
+		}
+		\img{img/v9.10.jpg}{Abgleich eines globalen Zustandes zwischen zwei Prozessen}{0.75}{}
+		\img{img/v9.14.jpg}{Algorithmus zum Finden eines globalen Zustandes}{0.75}{}
+		 
+		\img{img/v9.12.jpg}{}{0.75}{}
+		\img{img/v9.13.jpg}{}{0.75}{}
+	 
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
 
- 
- 
+\ch{Koordination zwischen Prozessen}
+	\stdImg{v10.1}{Beispiel verteilte Synchronisation}
+	\stdImg{v10.2}{Anforderungen Mutual Exclusion ME}
 
+	\se{Verteilter wechselseitiger Ausschluss}
+		\sse{Zentraler Server}
+			\stdImg{v10.3}{ gegenseitiger Ausschluss-Token für ein Set von Prozessen}
+			\sss{Probleme}
+				\uli{
+					\li P3 verlässt critical Section nicht \ra\ System bleibt stehen
+				 	\li Mehrere Tokens im System \ra\ Konflikt
+				 	\li Token geht verloren \ra\ System blockiert
+				}
+			 
+		\sse{ Token für den wechselseitigen Ausschluss}
+			\stdImg{v10.4}{}
+			\sss{Probleme}
+				\uli{
+					\li Jeder daran beteiligt, auch wenn er nicht in die critical Section will
+					\li Jede muss Token empfangen/senden
+					\li P3 fällt aus: P2 kann P4 nicht erreichen
+					\li Token geht verloren \ra\ jemand muss neuen Token generieren
+					\li Mehrere Tokens sind im Umlauf
+				}
+
+		\sse{Ricart und Agrawaka's Algorithmus}
+			\uli{
+				\li Wer in die critical Section will, sendet einen Multicast an alle
+				\li Sobald alle geantwortet haben, tritt er ein
+				\li Prozess, der schon in CS ist, antwortet erst, wenn er wieder draussen ist
+			} 
+ 			\stdImg{v10.5}{Multicasting und logische Uhren}
+ 			\uli{
+ 				\li Schwierigkeit: Anzahl Teilnehmer zu bestimmen. Multicast weis normalerweise nicht, wie viele in Multicastgruppe sind
+ 			}
+			\stdImg{v10.6}{Multicast synchronisation Beispiel}
+			\stdImg{v10.7}{Verteilte Lösung}
+			\uli{
+				\li Anzahl Prozesse müssen bekannt sein ohne zentralen Koordinator
+				\li Single Point of failure wurde ersetzt mit n points of failure
+				\li Möglichkeit: Mehrheitsvoting statt alle Antworten
+			}
+ 
+		\sse{Maekawa's Algorithmus - Mehrheitsvoting}
+			\uli{
+				\li Nur die Prozesse werden beteiligt, die auch die Ressource wollen
+				\li Probleme: Prozess stürzt ab
+			}
+			\stdImg{v10.8}{Maekawa's Algorithmus}
+
+ 		\sse{Koordinator wählen}
+ 			\uli{
+ 				\li Jeder beteiligte kann eine Wahl auslösen
+ 				\li Dazu muss jeder Prozess eindeutig identifizierbar sein
+ 				\li Falls der Koordinator ausfällt, muss ein neuer gewählt werden
+ 			}
+ 			\sss{Voraussetzungen}
+ 				\uli{
+ 					\li Jeder Prozess besitzt ein Label mit dem Wert des nicht abgestürzten Prozesses mit der grössten ID
+ 					\li Alle Prozesse pi nehmen an der Wahl teil und setzen irgendwann elected oder stürzen ab.
+
+ 				}
+ 			\sss{Wahl}
+ 				\stdImg{v10.9}{Wahlkreis}
+ 				\uli{
+ 					\li Wahlauslöser schreibt sich auf List und sendet Wahlanforderung an nächsten
+ 					\li nächster trägt sich ein
+ 					\li Sobald ein Knoten die Liste erhält und er schon eingetragen ist, bestimmter er das Maximum und benachrichtigt den nächsten, der wieder den nächsten benachrichtigt
+ 					\li 2(n-1) Nachrichten
+ 				}
+ 				\stdImg{v10.10}{Wahlalgorithmus}
+ 				
+ 		\sse{Bully Algorithmus}
+ 			\uli{
+ 				\li Jeder kennt die Nachbarn, die eine höhere ID haben
+ 				\li Fällt einer aus, so kann der neue Koordinator direkt bestimmt werden
+ 				\li n-2 Nachrichten
+ 				\li Jeder Knoten nimmt einen andern Knoten aus seiner liste, wenn er ihn nicht mehr erreicht
+ 			}	
+ 			\stdImg{v10.11}{Bully Algorithmus}
+ 			\stdImg{v10.12}{Bully Alg. Beispiel}
+ 
+ 	\se{Multicast Kommunikation}
+		\sse{ISIS Algorithmus}
+			\stdImg{v10.13}{ISIS Algorithmus}
+			\uli{
+				\li Anfrage \ra\ Vorschlag \ra\ Konsens
+			}
+	
+	\se{Konsensbildung}
+		\uli{
+			\li fixe Anzahl Prozesse
+			\li Nur Nachrichtenaustausche
+			\li Zufällige Prozessausfälle möglich
+		}
+		\stdImg{v10.14}{Ergebnis: p 1 und p2 einigen sich nach dem Absturz von p3 auf ,,proceed''}
+		\uli{
+			\li Systeme mit drei Knoten können keinen Konsens finden
+			\li Bei vier Knoten ist Mehrheitsvoting möglich
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 
 \end{document}
