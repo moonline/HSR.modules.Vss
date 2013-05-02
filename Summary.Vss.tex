@@ -1066,17 +1066,68 @@ Probleme bei Verteilten Dateisystemen: Replikation, Caching, Objekt-Persistenz
 			\li Bei vier Knoten ist Mehrheitsvoting möglich
 		}
 		
+	
+\ch{Modellierung paralleler und verteilter Systeme}
+	\uli{
+		\li Ist es Live?
+		\li Gibt es Starvation?
+		\li Gibt es Deadlocks?
+	}
+	\expl{Nebenläufigkeit / Parallelität}{\textbf{Nebenläufigkeit (Concurrency)}:  Zwei Ereignisse sind nebenläufig, wenn sie parallel ausgeführt werden können (jedoch nicht müssen), das heisst, wenn zwischen ihnen keine kausale Abhängigkeit besteht.\\
+	\textbf{Parallelität}: Zwei Ereignisse finden parallel statt, wenn sie gleichzeitig ausgeführt werden.
+	}		
+	\se{Petri Netze}
+		\definition{Petri Netz}{Kommunizierende Automaten}
+		\stdImg{v11.1}{Beispiel Petri Notation}
+		\sse{Komponenten und Regeln}
+			\stdImg{v11.2}{Komponenten}
+			\stdImg{v11.3}{Regeln}
+			\stdImg{v11.4}{Regeln}
+			\stdImg{v11.6}{Vor- und Nachbereiche}
+			\stdImg{v11.8}{Beispiel}
+			\uli{
+				\li Bei einer Transaktion können sowohl Tokens vervielfacht wie gemergt werden
+			}
+			
+		\sse{Formalisierung}
+			\stdImg{v11.5}{Formalisierung}
+			\stdImg{v11.7}{Formalisierung}
 		
+		\sse{Erreichbarkeitsgraph}
+			\exam{\stdImg{v11.9}{}}
+			\stdImg{v11.10}{Unbeschränktes System}
+			\stdImg{v11.11}{Weiteres Beispiel}
+			\stdImg{v11.12}{Erreichbarkeitstabelle}
+			\stdImg{v11.13}{Endliches System}
 		
+		\sse{Beschränktheit}
+			\uli{
+				\li  Eine Stelle heisst beschränkt, wenn die Anzahl Tokens auf ihr nie eine
+gewisse Anzahl übersteigt.
+				\li  Ein System heisst beschränkt wenn alle Stellen des Systems
+beschränkt sind.
+				\li Wenn der Graph endlich ist, ist das System beschränkt
+				\li Wenn der Graph unendlich ist, ist das System unbeschränkt
+			}
+			\stdImg{v11.14}{}
+			
+		\sse{Deadlock}
+			\uli{
+				\li  Unter Konflikt versteht man, dass das Schalten der einen Transition, die Konzession der anderen konzessierten Transition weg nimmt. 
+				\li Die Unabhängigkeit liegt offensichtlich darin, dass die betreffenden Transitionen weder um Tokens in ihrem Vorbereich, noch um freie Kapazitäten in ihrem Nachbereich  konkurrieren müssen: concurrency.
+			}
+			\img{img/v11.15.jpg}{}{1}{}
+			\img{img/v11.16.jpg}{}{1}{}
 		
-		
-		
-		
-		
-		
-		
-		
-		
+		\sse{Crosstalk}
+			\uli{
+				\li Zwei Agenten kommunizieren über einen (zuverlässigen) Kanal.
+				\li Der Kanal ist zuverlässig sofern nur eine Nachricht im Kanal ist.
+				\li Crosstalk entsteht, wenn beide Agenten Nachrichten in den Kanal stecken und diese im Kanal aufeinander treffen.
+				\li Lösung: Acks wie beim Wirless LAN
+			}
+			\stdImg{v11.17}{Crosstalk Algorithmus, der Deadlockfrei, Starvationfrei und ´´living'' ist}
+			
 		
 		
 		
