@@ -1127,13 +1127,79 @@ beschränkt sind.
 				\li Lösung: Acks wie beim Wirless LAN
 			}
 			\stdImg{v11.17}{Crosstalk Algorithmus, der Deadlockfrei, Starvationfrei und ´´living'' ist}
-			
+		
+	\se{Repetition}		
+		\exam{Wieso braucht man Election in einem Verteilten System? Ein Cluster oder eine Cloud braucht immer einen Chef / Verwalter. }
+		\expl{Petri Netze}{Modellierung von Systemen\\ \ra\ finden von Deadlocks, livelocks, Starvation, Fairness}
+		\definition{Livelock}{Einer wartet z.B. auf Nachricht von (noch lebenden) Knoten. Weil dieser andere Knoten zu beschäftigt ist um die Nachricht zu senden, wartet/blockiert das ganze System.}
+	
 		
 		
-		
-		
-		
-		
-		
+\ch{CSP}
+	\definition{CSP}{Communicating Sequential Processes, einfache Prozessalgebra}
+	\expl{LTS}{Labelled Transition System, keine Endzustände, Anzahl Zustände und Übergänge unendlich, Aktionen können synchronisiert werden. }
+
+	%\stdImg{v12.1}{Petri Notation}
+	
+	\stdImg{v12.2}{CPS Notation}
+	\stdImg{v12.3}{Präfix Notation}
+	\stdImg{v12.4}{Labyrinth Beispiel}
+	\stdImg{v12.5}{CSP Sprachelemente}
+	\stdImg{v12.6}{Uhr Beispiel}
+	
+	\uli{
+		\li Verknüpfung von zwei Prozessen P,Q ist wiederum ein Prozess
+		\li CSP bewegt sich auf sehr abstraktem level
+		\li STOP: Kein reguläres Prozessende (System wird abgewürgt)
+		\li Rekursion: Automat in Kette einbinden:\\
+		$CH5: (in5 \rightarrow out2 \rightarrow out1 \rightarrow out2 \rightarrow CHF)$
+			\stdImg{v12.7}{CSP Rekursion}
+		\li Choice ist ein Prozess, der zwei unterschieldiche Sachen tun kann, darum Klammer ganz aussen rum:\\
+			\stdImg{v12.8}{Choice (Alternative Ausführung)}
+			\stdImg{v12.9}{Choice Beispiel}
+			\stdImg{v12.10}{Allgemeine Auswahl (Case)}
+		$(a\rightarrow b|y\rightarrow x)$
+		\li Direkte Übergänge P\ra Q sind wie bei den Petrinetzen nicht erlaubt. Es muss immer ein Event dazwischen sein.
+	}
+	
+	\stdImg{v12.11}{CSP Axiome}
+	\examp{Choice}{ Beschreiben sie einen Automaten, welcher Schokolade oder Kaffee
+		liefern kann.\\
+		$VM = uX: {coin, choc, coffee} (coin \rightarrow choc \rightarrow X coffee \rightarrow X )$
+	}
+
+	\uli{
+		\li Traces: Spuren von Prozessen
+			\stdImg{v12.12}{Traces}
+	}
+
+	\examp{Traces}{(a -> b -> STOP): {<>, < a >, < a, b >}\\
+ 		(a -> STOP b -> STOP): {<>, < a >, < b >}
+	}
+	%\stdImg{v12.13}{Trace Regeln}
+	
+	\stdImg{v12.14}{Kopf und Ende von Traces – Länge eines Traces}
+	\stdImg{v12.15}{Kommunikations Events}
+	\stdImg{v12.16}{Ein-/Ausgabe}
+	\stdImg{v12.17}{Akkumulator Beispiel}
+	\examp{I/O}{ Kanal: a:{0,1}, besteht aus den Events: {a.0, a.1}\\
+		 Beschreiben sie einen Prozess, welches die Eingabe dupliziert: \\
+		 	Dup = in ?x -> out ! x -> out ! x -> Dup\\
+		 Beschreiben Sie einen Prozess, der zwei natürliche Zahlen multipliziert: \\
+		 	Prod = in ? x:N -> in ? y:N -> out ! (x*y) -> STOP
+	}
+	
+	\stdImg{v12.18}{Interne Auswahl}
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
