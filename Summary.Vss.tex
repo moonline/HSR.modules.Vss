@@ -1192,6 +1192,97 @@ beschränkt sind.
 	\stdImg{v12.18}{Interne Auswahl}
 
 
+	\stdImg{v13.1}{Concurrency}
+	\stdImg{v13.2}{Concurrency}
+	\stdImg{v13.3}{Channels}
+
+
+
+\ch{Webservices}
+	\definition{Web Service}{Ein WS Interface beschreibt eine Sammlung von Diensten,
+welche den Clients zur Verfügung stehen:
+		\uli{
+			\li Hauptvorteil: Kann in jeder beliebigen Sprache realisiert werden
+			\li Programme / Dienste
+			\li Objekt-Methoden (ein Dienst umfasst in der Regel mehrere Methoden!)
+			\li Datenbankzugriffe
+			\li Berechnungsdienste
+		}
+	}
+	
+	\expl{WebService}{Gemeinsam ist allen Web Services, dass sie in XML spezifiziert sind
+und die Nutzung/Aufrufe ebenfalls in XML angegeben werden können}
+
+	\expl{Warum ist ein Webserver kein Remote Method Call?}{Es werden nur Servicedaten übermittelt, keine konkrete Methoden. Ein Service ist mächtiger, als ein einzelner Methodenaufruf (fasst mehrere Methoden zusammen). Zudem wird möglichst Zustandslos gearbeitet.}
+		
+	\uli{
+		\li Http basiert, keine Probleme mit Tunneln
+		\li Kein Marshalling
+		\li SOAP: Zugriff auf entfernte Objekte
+		\li WSDL: Webservice Description Language
+		\li UDDI: Registry, mit Sammlungs von Diensten
+		\li Unteren Schichten bleiben verborgen
+		\li  Web Services können top down oder bottom up entwickelt werden
+			\uli{
+				\li Top down: ausgehend von einer (XML) Web Service Beschreibung (in
+WSDL)
+				\li Bottom up: ausgehend von bestehendem App in C\#, Java, Perl, ... .
+			}
+
+	}
+	\stdImg{v14.1}{}
+	
+	\sse{XML RPC}
+		\uli{
+			\li sehr simpel
+			\li Http/XML basiert
+			\li nur wenige Befehle
+			\li Gesendet werden Methoden mit Parameter
+			\li Empfangen werden Responses mit Values
+		}
+
+	\sse{UDDI}
+		\stdImg{v14.2}{}
+		\stdImg{v14.7}{Grobstruktur}
+
+	\se{SOAP}
+		\uli{
+			\li (simple) Object Access Protocol
+			\li Header: Login, Verschlüsselung, ...
+			\li Body: Methodennamen, Parameter
+		}
+		\stdImg{v14.3}{}
+		\stdImg{v14.4}{Anfrage an Service m}
+		\stdImg{v14.5}{Response}
+		
+		
+		\sse{WSDL}
+			\uli{
+				\li Sehr komplex
+				\li Nicht nur Daten und Methoden, sondern auch Typen und Transport Binding können definiert werden
+			}
+			\stdImg{v14.6}{}
+
+	\se{REST}
+		\definition{REST}{Representational State Transfer}
+		\uli{
+			\li über die Adressierung werden Dienste angesteuert
+			\li Zustandslose Client/Server Protocol
+			\li RESTful nutzt Http für:
+				\uli{
+					\li Daten zu speichern (POST: create / update)
+					\li Daten zu lesen (GET: Query, select)
+					\li Daten zu löschen (DELETE)
+				}
+		}
+		\stdImg{v14.8}{}
+
+		\sse{Atom}
+			\uli{
+				\li RESTful Alternative zu RSS
+			}
+
+
 
 
 
