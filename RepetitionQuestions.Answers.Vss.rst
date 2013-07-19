@@ -51,3 +51,132 @@ Systemmodelle
 	* Technologysicht: Abbildung der Architektur auf echte Hardware
 	
 	
+Interprozesskommunikation
+=========================
+8)
+	synchron
+		Sender sendet Message und wartet, bis Antwort eintrifft. -> blockiert
+	asynchron
+		Sender sendet Message, legt Buffer für Antwort an und holt sie später ab. -> blockiert nicht
+		
+9)
+	Ports
+		Schnittstellen an einem Host
+	Sockets
+		Endpunkt der IP, TCP/UDP Kommunikation, ist immer an einen Port gebunden, wird durch ein File im Hintergrund repräsentiert.
+		
+10)
+	IP
+		Verbindungslose Kommunikation: Best Effort, Keine Übermittlungsbestätigung. Keine Übertragungsgarantie. Pakete können verloren gehen, doppelt oder in falscher Reihenfolge ankommen. Fehler aus tieferen Layern treten auch in IP auf.
+	TCP
+		Verbindungsbehaftete Kommunikation: Bestätigung und Retransmit bei verlorengegangenen. Reihenfolge garantiert.
+	UDP
+		Verbindungslose Kommunikation: Übertragung nicht garantiert, keine Bestätigung dafür weniger Overhead.
+		
+11) Pakete können verloren gehen, verworfen werden, doppelt oder in falscher Reihenfolge ankommen
+		
+12) UDP besitzt wesentlich weniger Overhead als TCP. Spielt die übertragene Datenmenge eine grössere Rolle als die vollständige Übertragung, so ist UDP geeignet. z.B. Multimedia Streaming, VoIP
+
+13)
+	UDP:
+		.. code-block:: java
+		
+			// sender
+			try {
+				DatagramSocket socket = new DatagramSocket();
+				String message = "Something to send...";
+				DatagramPacket p = new DatagrammPacket(message.getBytes(), (message.getBytes()).length, InetAddress.getByName(receiverHost), receiverPort);
+				try {
+					socket.send(p);
+				} catch (IOException e) { e.printStackTrace(); }
+				socket.close();
+			} catch (Exception e) { System.err.print(e); }
+			
+			// receiverHost
+			try {
+				DatagramSocket socket = new DatagramSocket(port);
+				buffer byte[] new byte[512];
+				String message = "";
+				String messagePart;
+				do {
+					DatagramPacket p = new DatagramPacket(buffer, buffer.length);
+					socket.receive(p);
+					messagePart = new String(buffer).trim();
+					message += messagePart;
+				} while (!messagePart.equals("."));
+				System.out.println(message);
+				socket.close();
+			} catch (Exception e) { System.err.print(e); }
+			
+			
+	TCP
+		.. code-block:: java
+		
+			// sender
+			try (Socket socket = new Socket()) {
+				BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
+				socket.connect();
+				String message = "Somethin to send...";
+				bos.write(message);
+			} catch (Exception e) { System.err.print(e); }
+			
+			// receiver
+			try (ServerSocket socket = new ServerSocket(serverPort)) {
+				while(true) {
+					try (ClientSocket client = socket.accept()) {
+						DataInputStream in = client.getInputStream();
+						DataOutputStream out = client.getOutputStream();
+						
+						String message = in.readUTF();
+						out.write("Successfull received: "+message);
+						
+						System.out.println(message);
+						client.close();
+					} catch (Exception e) { System.err.println(e); }
+				}
+				socket.close();
+			} catch (Exception e) { System.err.print(e); }
+			
+			
+14) Sie führen dazu, dass das Programm auf send() und receive() warten muss und blockiert ist. Besser: asynchrones send() benutzen.
+
+15) Sind Timeout und maximale Anzahl Retransmit ausgeschöpft, bricht TCP ab. Somit können auch bei TCP Pakete verloren gehen.
+
+16) 
+	Multicast
+		Empfänger melden sich bei einer Gruppe an. Nachrichten an die Gruppe werden automatisch allen Teilnehmern zugestellt. Gruppenkommunikation basiert oft auf Multicasting. Multicast muss von den Netzwerkkomponenten unterstützt werden.
+	IP Multicast
+		Verwendung von speziellen Adressen (224.0.0.1 bis 239.255.255.254) um Gruppen zu identifizieren. Verteilt wird die Nachricht von speziellen Multicastroutern. Begrenzung möglich durch Angabe der maximal durchlaufbaren Router.
+		
+17)
+	Marshalling
+		Daten mit einer internen Struktur werden in eine externe Struktur übersetzt (z.B. für den Versand in einem UDP Paket):
+	Un-Marshalling
+		Daten einer externen Struktur werden in eine interne übersetzt.
+		
+18)
+	direkte Socketnutzung
+		Exakte Steuerung der Sockets, möglicherweise effizienter
+	Nutzung durch Middleware
+		Abstraktion, keine loq-level Programmierung, universeller
+
+19) Die Objekte werden zerlegt und als Textform repräsentiert. Serialisierung kann genutzt werden, um Objekte über das Netzwerk zu übertragen.
+		Nachteile: Private Member sind sichtbar, Objektversionen können Ärger machen, Referenzen Serialisieren ist schwierig (möglicherweise sind die Referenzierten Objekte nicht mehr da bei der reSerialisierung)
+		
+20)
+
+21) 
+	* Serialisierbare Klassen müssen Serializable sein. 
+	* Mit transient können nicht zu serialisierbare Attribute gekennzeichnet werden. 
+	* Durch Überschreiben der Methode writeObject() und readObject() kann die Serialisierung gesteuert werden.
+	* Unterklassen von serialisierbaren Klassen sind ebenfalls serialisierbar!
+	
+22) Java Versionsnummer von Klassen (beinhaltet class-hash): Wird die Klasse verändert, können keine alten Objekte mehr deserialisiert werden! Mittels einer eigen vergebenenSerialVerUid kann die Versionierung gesteuert werden.
+
+23) Java Objekte als XML exportieren. Vorteil: Standartisiertes Datenformat, das auch andern Applikationen erlaubt, die Objekte weiterzuverwenden.
+
+24) Die Referenzen können ungültig werden und die gleiche Referenz darf nicht wiederverwendet werden.
+
+25) Die Java Non-blocking IO Channels dienen zum nicht blockierenden Datenaustausch anstelle der normalen (blocking) Channels.
+
+
