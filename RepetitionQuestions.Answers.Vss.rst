@@ -288,3 +288,80 @@ RMI
 
 Messaging
 =========
+44) 
+	* Messaging ist Technologie unabhängig und es können beliebige Formate zum Einsatz kommen (JSON, XML, ...).
+	* Sender und Empfänger müssen nicht zwingend zur gleichen Zeit aktiv sein.
+	
+45) Sender und Empfänger sind entkoppelt. Die Kommunikation läuft über eine Zwischenstelle/Vermittler.
+
+46)	+--------------------+--------------------------------------------+--------------------------------------------+
+	|                    | räuml. gekoppelt                           | räumlich nicht gekoppelt                   |
+	+--------------------+--------------------------------------------+--------------------------------------------+
+	| zeitlich gekoppelt | Sender und Empfänger müssen gleichzeitig   | Sender und Empfänger müssen gleichzeitig   | 
+	|                    | aktiv sein, damit eine Nachricht über-     | aktiv sein zur Nachrichtenübertragung. Die |
+	|                    | mittelt werden kann. Die Kommunikation ist | Kommunikation ist ungerichtet. z.B. IP     |
+	|                    | gerichtet. z.B RMI                         | Multicast                                  |
+	+--------------------+--------------------------------------------+--------------------------------------------+
+	| zeitlich nicht gek.| Sender und Empfänger müssen nicht gleich-  | Sender und Empfänger brauchen sich nicht   |
+	|                    | zeitig aktiv sein. Die Kommunikation ist   | zu kennen und haben eigene Zeitsysteme.    |
+	|                    | gerichtet.                                 |                                            |
+	+--------------------+--------------------------------------------+--------------------------------------------+
+
+	
+Gruppenkommunikation
+--------------------
+47) Multimediastreaming, Multimediachat mit mehreren Teilnehmern, Nachrichtensystem für mehrere Empfänger
+
+48) 
+	offene Gruppe
+		Kommunikation von aussen in die Gruppe möglich
+	geschlossene Gruppe
+		Kommunikation nur innerhalb der Gruppe
+	überlappende Gruppe
+		Mitglieder können in mehreren Gruppen seine
+		
+49)
+	Anforderungen an Zuverlässigkeit und Ordnung
+		P2P
+			* Integrität: versendete und empfangene Nachricht sind identisch
+			* Validität: Nachricht wird eventuell abgeliefert
+		Pub / Sub
+			* Integrität
+			* Validität
+			* Agreement: Wird die Nachricht an jemanden ausgeliefert, wird sie an alle ausgeliefert
+	Ordnung
+		FIFO
+			Nachrichten werden an alle in der gleichen Reihenfolge ausgeliefert
+		Kausale Ordnung
+			Die Ordnung der Ereignisse beeinflusst die Reihenfolge der Nachrichten
+		Totale Ordnung
+			Wenn eine Nachricht vor einer anderen einem Mitglied ausgeliefert wird, wird sie das an alle
+			
+50) JGroups erlaubt das erzeugen von Groups und das Publishen / Subscripen in eine Gruppe.
+		* Channels: Gruppen, denen man beitreten kann
+		* Building Blocks: Gruppieren Channels
+		
+		
+Publisher / Subscriber
+----------------------
+51) 
+	* Publisher bringen Nachrichten in einen Pool eine
+	* Subscriber werden benachrichtigt, sobald neue Nachrichten da sind
+	* Rollen:
+		* Ereignisdienst: generiert Ereignisse
+		* relevantes Objekt
+		* Beobachter: Vermittler
+	* Mit Filter können Subscriber die Nachrichten filtern
+	
+52) 
+	Topic
+		Nachrichten können an ein Thema adressiert werden. Es werden nur die Abonnenten des Themas über die neue Nachricht benachrichtigt
+	Typen
+		Subscribers werden anhand des Nachrichtentyps benachrichtigt.
+		
+53) Die Queue muss dies übernehmen. Kennt die Queue die Subscribers nicht, so ist das unmöglich.
+
+54) Der Broker übersetzt die Nachricht vom Format eines Systems für das Format eines andern Systems
+			
+			
+			
