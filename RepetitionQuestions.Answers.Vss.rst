@@ -180,3 +180,111 @@ Interprozesskommunikation
 25) Die Java Non-blocking IO Channels dienen zum nicht blockierenden Datenaustausch anstelle der normalen (blocking) Channels.
 
 
+Verteilte Objekte und entfernte Aufrufe
+=======================================
+26) Damit der Benutzer entsprechende Massnahmen treffen kann gegen blockieren (z.B. asynchronen Aufruf).
+
+27)
+	* Remote Garbage Collection
+	* Remote Procedure Call
+		
+28) 
+	RRA
+		* Clients stellen Requests an einen Server (R). 
+		* Der Server antwortet falls notwendig (R).
+		* Der Client sendet je nach dem ein Acklowledge (A).
+	Probleme
+		* Nachricht/Reply/Ack kann verloren gehen
+		* Message/Request kann mehrfach ankommen
+		* Message / Reply kann mehrfach interpretiert/ausgeführt werden mit unterschiedlichen Ergebnissen, falls Message/Reply den Status von Server oder Client verändern.
+		* Server/Client kann ausfallen, überlastet sein
+		* Kommandreihenfolge kann durcheinander geraten
+		
+29) siehe 28.Probleme
+
+30) 
+	* Remote Call wird 1 mal durchgeführt (Maybe)
+	* Remote Call mindestens einmal durchgeführt (at least once) -> mehrmals möglich mit untersch. Resultaten
+	* Remote Call wird höchstens einmal durchgeführt (at most once) -> Reply wird gespeichert: immer gleiches Res.
+	* Remote Call wird genau einmal durchgeführt
+		
+31) Es soll entfernt eine Methode aufgerufen werden, genau so wie es lokal geschieht.
+		Aufruf
+			Unbedingt Call by Value, da Referenzen auf Server und Client unterschiedlich sind
+		lokale Memer
+			Zugriff auf lokale Member remote ist zu unterlassen, die Referenz könnte sich geändert haben in der Zwischenzeit.
+			
+32) Interface definition Language. Definiert Signatur der Methoden sowie in und out parameter.
+	.. code-block:: corba
+	
+		interface NodeList {
+			void addNode(in Node node);
+			void removeNode(in int position, out Node node);
+		}
+		
+		
+33) 
+	* Remote Procedure Call: Data Structs + die Nummer der aufzurufenden Methode werden übermittelt. 
+	* Retourniert werden Structs.
+	* Communication Moduls auf beiden Seiten sind für die Übermittlung zuständig
+	
+34) Procedure ist grösser, beinhaltet u.U. mehrere Methoden, Methode call ist eher simpel	
+	
+35) 
+	* Remote Method Invocation. 
+	* Biete Remote method calls, Übertragung von serialisierten Java Objekten und remote Garbage Collection.
+	* Der Client kommuniziert mit einem Proxy, der Server mit einem Skeleton. Proxy und Skeleton kommunizieren miteinandern und übernehmen Garbage Collecton, Remote Calls, ...
+	
+	
+RMI
+===
+36) 
+	Interface Server
+		Interface zur Verfügung stellen
+	Registry
+		Registry initieren
+	Server
+		Server erzeugen
+		Serverinterface implementieren
+		Server anmelden bei Registry
+	Client
+		Client erzeugen
+		RMI Server loockup in Registry machen
+		Entfernte Methode auf lokalem Serverproxy aufrufen
+		
+37) 
+	Client
+		* besitzt lokale Objekte
+		* besitzt einen Proxy für jedes Remote Objekt
+		* besitzt ein Kommunikationsmodule, führt Request/Reply Protokoll aus
+		* besitzt ein Remote Reference Module, das lokale und remote Referenzen zueinander übersetzt
+		* Der Client spricht nur mit dem Proxy
+	Server
+		* besitzt lokale Objekte (Dienstobjekte, die der Client aufruft)
+		* besitzt ein Kommunkationsmodule
+		* besitzt Skeleton & Dispatcher für die lokalen Objekte
+		* besitzt ein Remote Reference Module
+		
+38) 
+	Proxy
+		repräsentiert das entfernte Objekt, implementiert die Schnittstelle des entferten Objektes. Der Client spricht immer nur mit dem Proxy.
+	Skeletton
+		repräsentiert den Client, implementiert die Methoden der entfernten Schnittstelle. Der Server spricht immer nur mit dem Skeletton. Nur der Proxy des Clients und der Skelleton des Servers sprechend über das Netz direkt miteinander.
+		
+39) Der Dispatcher wählt die gewünschte Methode auf dem Skeleton aus.
+
+40) 
+	Call by Value
+		Objekt Serialisieren, mitgeben
+	Call by Reference (pseudo)
+		Dem Server den Client als Parameter mitgeben, damit der Server auf dem Client entsprechende Methoden aufrufen kann
+		
+41) Remote Garbage Collection übernimmt das Entsorgen von nicht mehr benötigten Objekten in einem RMI System. Client und Server wissen nicht, wann auf der andern Seite ein Objekt stirbt und sie es abräumen können. Daher muss der GC regelmässig remote vorbeischauen und überprüfen, welche Objekte nicht mehr benötigt werden.
+
+42) Das Interface wird auf einen Interface Server geladen. Client und Server laden sich das Interface herunter und implementieren es. Gegenüber dem normalen RMI ändert sich für den Client nichts, dem Server muss eine remote Codebase hinterlegt werden.
+
+43) Dem RMI Server wird ein Daemon vorgeschaltet. Der Server geht schlafen sobald seine aktuellen Requests abgehandelt wurden. Der Client spricht den Server an, der Daemon weckt den Server und übergibt den Call.
+
+
+Messaging
+=========
