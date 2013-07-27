@@ -344,24 +344,104 @@ Gruppenkommunikation
 		
 Publisher / Subscriber
 ----------------------
-51) 
-	* Publisher bringen Nachrichten in einen Pool eine
-	* Subscriber werden benachrichtigt, sobald neue Nachrichten da sind
-	* Rollen:
-		* Ereignisdienst: generiert Ereignisse
-		* relevantes Objekt
-		* Beobachter: Vermittler
-	* Mit Filter können Subscriber die Nachrichten filtern
-	
-52) 
-	Topic
-		Nachrichten können an ein Thema adressiert werden. Es werden nur die Abonnenten des Themas über die neue Nachricht benachrichtigt
-	Typen
-		Subscribers werden anhand des Nachrichtentyps benachrichtigt.
-		
-53) Die Queue muss dies übernehmen. Kennt die Queue die Subscribers nicht, so ist das unmöglich.
+51
+.. 
+* Publisher bringen Nachrichten in einen Pool eine
+* Subscriber werden benachrichtigt, sobald neue Nachrichten da sind
+* Rollen:
+	* Ereignisdienst: generiert Ereignisse
+	* relevantes Objekt
+	* Beobachter: Vermittler
+* Mit Filter können Subscriber die Nachrichten filtern
 
-54) Der Broker übersetzt die Nachricht vom Format eines Systems für das Format eines andern Systems
+52
+.. 
+Topic
+	Nachrichten können an ein Thema adressiert werden. Es werden nur die Abonnenten des Themas über die neue Nachricht benachrichtigt
+Typen
+	Subscribers werden anhand des Nachrichtentyps benachrichtigt.
+		
+53
+..
+Die Queue muss dies übernehmen. Kennt die Queue die Subscribers nicht, so ist das unmöglich.
+
+54
+..
+Der Broker übersetzt die Nachricht vom Format eines Systems für das Format eines andern Systems
 			
-			
-			
+55
+..
+P/S System::
+
+	                       Subscribers
+	
+	subscribe(t1)            subscribe(t2)          notify(e1)
+         |                       |                      ^
+	     v                       v                      |
+	+----------------------------------------------------------+
+	|              Public / Subscribe system                   |
+	+----------------------------------------------------------+
+	     ^                    ^                         ^
+	     |                    |                         |
+	publish(e1)          publish(e2)               publish(e3)
+
+	                     Publishers
+
+
+Message Queues
+--------------
+
+56
+..
+* MQ: Queue, in die Nachrichtein von Producern eingefügt und von Consumern abgeholt werden.
+* Unterschied P/S: Keine Richtung definiert, jeder Kann Message in Queue einfügen oder abholen
+* Arten
+	* Lesen blockiert bis Message eingetroffen
+	* Pollen, ob Nachricht da
+	* Notify, wenn Nachricht da
+
+57
+..
+Die Queue muss wissen, wer die Nachricht alles bekommen soll, damit sie den Zeitpunkt der Entsorgung weis.
+
+58
+..
+Es wurde eine Session aufgebaut, weil TCP genutzt wurde. Dies ist jedoch komplett unsinnig, weil eine Message eine einmahlige, gerichtete Nachricht ist.
+
+59
+..
+MQ::
+
+	           Consumers
+	
+	   [A]       [B]         [C]
+	receive()   poll()     notify()
+		|         |           ^
+	    v         v           |
+	+------------------------------+
+	|  |o|       |o|         |o|   | Message System
+	|  |o|       | |         |o|   |
+	|  |o|       | |         | |   |
+	|  | |       | |         | |   |
+	+------------------------------+
+	    ^          ^         ^
+	    |           \       /
+	  send()      send() send()
+	   [X]             [Y]
+
+	          Producers
+
+
+60
+..
+Java Messaging System. Plattformunabhängiges Message System.
+
+61
+..
+Message Oriented Middleware
+
+62
+..
+Ein Routerknoten verbindet sich mit jedem Teilnehmer, dadurch sind alle Teilnehmer über den Router miteinander verknüpft, ohne zu jedem andern Teilnehmer eine Verbindung aufbauen zu müssen.
+
+
