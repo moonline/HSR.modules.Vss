@@ -445,3 +445,167 @@ Message Oriented Middleware
 Ein Routerknoten verbindet sich mit jedem Teilnehmer, dadurch sind alle Teilnehmer über den Router miteinander verknüpft, ohne zu jedem andern Teilnehmer eine Verbindung aufbauen zu müssen.
 
 
+Verteilte Dateisysteme
+======================
+
+63
+--
+* Datenkonsistenz
+* Funktion trotz Komponentenausfall
+* Fehlertolerant
+* Skalierbarkeit
+
+64
+--
+Replikation der Daten. Kein Datenverlust, wenn ein Knoten ausfällt.
+
+65
+--
+* Concurrency
+* Accesssecurity
+* Wieder aktiven Knoten ohne Systemneustart integrieren
+* Übertragen der Verantwortlichkeiten bei Komponentenausfall
+* Caching der Daten
+
+66
+--
+Ist eine Komponente nicht erreichbar, müssen die Operationen später ausgeführt werden können
+
+
+NFS
+---
+
+67
+..
+Der Server liefert die Daten an die Clients aus. Dabei werden nur Teile der Daten übertragen.
+
+68
+..
+Der Server leiht dem Client die Datei aus. Sobald ein anderer die Datei auch will, fordert er sie mit den gemachten Änderungen zurück.
+
+69
+..
+Auf Grosse Dateien.
+
+
+AFS
+---
+
+70
+..
+AFS liefert immer ganze Daten an den Client.
+
+71
+..
+Auf viele aber kleine Daten.
+
+72
+..
+AFS überträgt immer ganze Dateien, NFS nur Teile davon.
+
+
+HDFS
+----
+
+73
+..
+* Effizientes Client Caching
+* Geschwindigkeit vergleichbar mit lokalem Dateisysteme, Hoher Durchsatz
+* Absturzresistenz
+* Skalierbareit
+
+74
+..
+* Setzt auf die jeweiligen Dateisysteme der Komponenten auf
+* Für riesige Dateien ausgelegt
+* Grosse Blöcke
+* Für Write Once, Read Many ausgelegt (Streaming)
+* Delegation bei Knotenausfall
+
+75
+..
+Es setzt auf die jeweiligen bestehenden Dateisysteme auf und ist für riesige Dateien ausgelegt
+
+76
+..
+Ausfallsicherheit
+	Das System darf nicht ausfallen, auch wenn einzelne Knoten ausfallen.
+Data Recovery
+	Fällt ein Knoten aus, müssen die Daten wiederhergestellt werden können
+Component Recovery
+	Ausgefallene Komponenten müssen sich wieder ins System einfügen lassen, ohne das dies einen Einfluss auf das System hat
+Konsistenz
+	Die Daten müssen jederzeit Konsistenz sein
+Skalierbarkeit
+	Das System muss um weitere Knoten erweitert werden können
+
+77
+..
+* Lokal anfallende Daten werden auch lokal behandelt
+* Berechnungen finden da statt, wo die Daten liegen
+
+78
+..
+Er wird wieder hochgefahren und ins System integriert. Anschliessend werden die Daten aktualisiert.
+
+79
+..
+Es dient dazu, grosse und verteilte Datenmengen zusammenzuführen, zu verknüpfen und zu berechnen.
+
+**WordCount**
+
+Input
+	Ein- oder mehrere Sätze
+Map
+	Es wird eine List aufgestellt mit den Wörtern (für jedes Wort gibt es so viele {Word, 1} - Einträge, wie Wörter )
+Shuffle
+	Die einzelnen Einträge werden zusammengesammelt {Wort, 1, 1, 1}
+Reduce
+	Die EInträge werden berechnet: {Wort, 3}
+Output
+	Eine Liste mit den Wörtern und deren Anzahl vorkommen wird zurückgegeben.
+
+80
+..
+Systemarchitektur Hadoop::
+
+	                                   [ Client ]
+	                                       ^
+	                                       |
+	                                       v
+	                     +-------------------------------------+
+	                     | Naming Node     [ Job Tracker ]     |           Master Node
+	                     +-------------------------------------+
+	
+	                   ^          ^                   ^         ^
+	                  /           |                   |          \
+	                 v            v                   v           v
+	------------------- ------------------- ------------------- -------------------
+	|  Node 1         | | Node 2          | | Node 3          | | Node 4          |     Slaves Nodes
+	| [ Task Tracker] | | [ Task Tracker] | | [ Task Tracker] | | [ Task Tracker] |
+	| - Map           | | - Map           | | - Map           | | - Map           |
+	| - Reduce        | | - Reduce        | | - Reduce        | | - Reduce        |
+	------------------- ------------------- ------------------- -------------------
+
+
+81
+..
+Der Naming Node weis, wo die Daten liefern und Holt diese ab. Anschliessend werden sie dem Client ausgeliefert.
+
+82
+..
+* Es gibt einen Job Tracker, mehrere Task Trackers, eine Naming Note. Die restlichen Nodes sind Data Nodes.
+* Die Task Tracker fragen über den Naming Node den Node ab, auf dem die Daten liegen.
+* Der Client kommuniziert immer mit dem Job Tracker.
+
+::
+
+	                           ,- Data Node
+	              Task Tracker -- Data Node
+	            /             \
+	Job Tracker                Naming Node
+	           \              /
+	             Task Tracker -- Data Node
+	                         `- Data Node
+
+
