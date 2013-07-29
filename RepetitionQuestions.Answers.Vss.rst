@@ -754,7 +754,114 @@ Java Naming and Directory Interface API: Einheitliche Schnittstelle zum Zugriff 
 JNDI ist ein Kontextgraph und besitzt Schnittstellen zu verschiedensten Diensten, wie z.B. LDAP.
 
 
+P2P
+===
+
+107
+---
+Vorteile
+	* Daten verteilt, redundant
+	* Teilnehmer gleichberechtigt
+	* Keine Zentrale kontrolle
+	* kein zentrales Backup
+	* Weniger gut angreifbar
+Nachteile
+	* Schwieriger, Informationen aufzufinden
+	* Netz verändert sich dauernd
+	* Suche nach Informationen kann lange dauern
+	* Datenkonsistenz schwierig
+	* Keine Zentrale zugriffskontrolle
+
+108
+---
+Das Netz organisiert sich neu, andere Knoten übernehmen dessen aufgabe.
+
+109
+---
+* Routen von Anfragen
+* Verteilte Datenspeicherung
+
+110
+---
+* Verteilter Algorithmus für das Routing in einem P2P Netz
+
+111
+---
 
 
+Routing
+-------
+
+112
+...
+Jeder Knoten weiss nur über einen Teil der Objekte, wo sie sind. Trotzdem muss es möglich sein, über Routing das gesuchte Objekt zu identifizieren.
+
+113
+...
+* Alle Knoten sind in einem Kreis angeordnet.
+* Es wird an einem Punkt eingestiegen und zirkulär von einem Knoten zum nächsten gehüpft, der dem gesuchten Ziel am nächsten kommt.
+* Nicht sehr effizient
+
+114
+...
+* Jeder Knoten weis, wo die nächsten Knoten zu finden sind (Knoten der nächsten Stelle in der ID)
+* Es wird von einem Knoten aus ein Knoten angesprungen, dessen erste Stele mit dem Ziel übereinstimt
+* Es wird der nächste Knoten angesprungen, dessen nächste Stelle mit dem Ziel übereinstimmt
+* Stelle für Stelle nähert man sich so dem Ziel
+
+115
+...
+* Jeder Node beinhaltet ein Set mit numerisch und eines mit physisch nahen Knoten.
+* die Routing Tabelle basiert auf Präfix basierte Routing
+
+116
+...
+* Berücksichtigung der Entfernung (Latenz) von Knoten
+* Information auf nahen Knoten wird bevorzugt
+* weniger Trafic, schneller am Ziel
+
+117
+...
+einfügen
+	* Beim veröffentlichen eines neuen Objektes benachrichtigt der Knoten seinen Root Knoten
+	* Alle Knoten auf dem Weg speichern einen Verweis auf das Objekt
+lokalisieren
+	* Anfrage geht an Root Node des Objektes
+	* Passiert die Anfrage auf dem Weg einen Verweis zu dem Objekt, wird sie direkt dorthin umgeleitet
+	* Desto naher der Knoten dem gesuchten Objekt ist, desto früher kreuzt sich sein Suchpfad mit dem Verweisfad.
+	* Anfragen laden nur im schlechtesten Fall beim Root Node
+löschen
+	?
+
+
+DHT
+---
+
+118
+...
+* DHT's sind über viele Knoten verteilt und beinhalten Referenzen zu Objekten
+* Eine verteilte Hash Tabelle kann genau gleich viel wie eine lokale.
+
+119
+...
+* Die Information ist beim Node gespeichert, dessen ID die nächst grössere Zahl als der Value Hash darstellt.
+* Von einem Startpunkt aus wird im Kreis herum gegangen, bis der Knoten mit der Information gefunden wurde.
+* Nachteil: Ineffizient.
+
+120
+...
+* Jeder Knoten besitzt eine Successortabelle mit so vielen Einträgen wie Knoten: (index, z=k+2^(i-1), successor).
+* Die Information wird bei der nächst höheren Knoten id (successor) als z gespeichert.
+* Der Successor ist der nächstgrossere Knoten von z = {actual Node}+2^({Index}-1)
+* Abfrage: Jeder Knoten sendet eine Anfrage an den Successor weiter, dessen Id kleiner als die gesuchte ist, wenn er selbst das Objekt nicht besitzt.
+* Die Hops einer Query ähneln der Abfrage in einer Baumstruktur: O(log(N))
+
+121
+...
+* Der nächst grössere Knoten wird gesucht
+* Der Successor Pointer des neuen Knoten zeigt auf den gefundenen Knoten
+* Elemente werden reorganisiert
+* Der nächstkleinere Knoten wird aktualisert (Sucessor Pointer)
+* Alle Finger Pointer werden angepasst
 
 
