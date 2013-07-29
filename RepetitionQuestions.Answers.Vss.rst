@@ -609,3 +609,152 @@ Der Naming Node weis, wo die Daten liefern und Holt diese ab. Anschliessend werd
 	                         `- Data Node
 
 
+Namensdienste
+=============
+
+83
+--
+Ein Namesdienst ist ein Ausunftsdienst, wo sich Objekte, denen ein bestimmter Namen zugeordnet wurde, befinden. Die Aufgabe des Namensdienstes ist es, Kontexte und Subkontexte aufzulösen und die Adresse des Objektes zu liefern.
+
+84
+--
+Ein Kontext ist die Umgebung eines Objektes. Beispiel www.hsr.ch. "ch" ist der Kontext, "hsr" der Subkontext.
+
+85
+--
+Einen Kontext einem Objekt zuzuordnen.
+
+86
+--
+Eine Gruppierung von Kontexten. Z.B. ftp://upload.hsr.ch. Ftp ordnet diese Adresse dem Namensraum ftp zu.
+
+87
+--
+Ein System zur Auflösung von Namen und zum Auffinden deren gebundenen Objekte.
+
+88
+--
+Im Unterschied zum reinen Namensdienst gibt es noch Attribute, nach deren die Objekte gefunden werden können.
+
+89
+--
+* Fehlertolerant
+* Ein Fehler darf sich nicht global auswirken
+* Hohe und langzeitliche Verfügbarkeit
+* Verwalten einer grossen Anzahl von Namen
+* Tolerierung von Misstrauen (Nicht jeder kennt jeden und nicht jeder hat auf alles Zugriff)
+
+90
+--
+Sind Namen, die auf andere Namen zeigen. z.B. www.goo.gl/erdif zeigt auf search.google.com/query=erdif
+
+91
+--
+Iterativ
+	* Client fragt Nameserver nach Adresse zu Namen
+	* Nameserver liefert Antwort oder Server für Kontext.
+	* Client fragt diesen Server
+	* Dieser liefet wiederum die Antwort oder einen Server für den Subkontext.
+	* ...
+Rekursiv
+	* Client fragt Nameserver nach Adresse zu Namen
+	* Nameserver liefert Antwort oder fragt andern Nameserver
+	* Dieser liefert Antwort oder fragt wieder andern Nameserver
+	* ...
+
+92
+--
+Erlaubt nicht nur das Finden von Namen, sondern von ganzen Services. Services melden sch selbstständig an und Clients verbinden sich automatisch mit den Services.
+
+93
+--
+Global Naming System: Verteiltes, langlebiges, robustes und anpassbares Namenssystem, das mit Baumstrukturen arbeitet. Bsp: <EU/DE/HB/IBM, Hans.Mustermann/phone>
+
+94
+--
+Verzeichnisdienst, die Grundlage von LDAP. Zu jede, Eintrag ist die Klasse spezifiziert (z.B. organozation). Es können eignen Klassen definiert werden. Einträge können nocht Attribute enthalten.
+
+
+LDAP
+----
+
+95
+..
+LDAP ist ein auf X.500 basierender Verzeichnisdienst, dessen Einträge Klassen zugeordnet sind. Mit Schematas werden die Beziehungen zwischen Unter- und Oberklassen definiert.
+
+96
+..
+OSI DAP setzt auf dem Presentation Layer auf, LDAP auf dem Transport Layer. LDAP ist wesentlich schlanker.
+
+97
+..
+Ein Directory ist ein Subtree im Verzeichnisbaum. z.B::
+
+	o=Swisscom
+
+
+98
+..
+Ein Eintragsteil ist Typ einer Objektklasse.
+
+Beispiel cn=Müller, sn=Hans, ou=People, o=SBB, c=ch::
+
+	c=ch
+		o=SBB
+			ou=People
+				uid=123
+					sn=Hans
+					cn=Müller
+
+
+99
+..
+Objektklassen sind allgemeine Beschreibungen für gleichartige Objekte. z.B:
+* ou Organization Unit
+* o Organisation
+* c Country
+
+100
+...
+* add Entry
+* remove Entry
+* modify Entry Value
+* search Entry
+* compare Entry
+
+101
+...
+* Jeder Name setzt sich aus einer Sequenz von Teilen zusammen.
+* Die Einträge in einem Verzeichnis können hirarchisch in einer Baumstruktur geordnet werden.
+* Aliase ermöglichen Verknüpfungen
+* Ein Verzeichnisbaum kann sich über mehrere Server erstrecken,
+
+102
+...
+Zwischen Client- und Server übermittelte TCP/IP Nachrichten spezifizieren die Operationen, die der Client ausführen möchte.
+
+103
+...
+Zuerst wird der lokale LDAP verwendet, dann externe.
+
+104
+...
+LDAP Objekte sind über Schemen definiert und deklarieren, welche Pflichtattribute und optionale Attribute definieren.
+
+
+JNDI
+----
+
+105
+...
+Java Naming and Directory Interface API: Einheitliche Schnittstelle zum Zugriff auf verschiedenste Verzeichnisdienste.
+
+106
+...
+JNDI ist ein Kontextgraph und besitzt Schnittstellen zu verschiedensten Diensten, wie z.B. LDAP.
+
+
+
+
+
+
