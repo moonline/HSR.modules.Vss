@@ -995,8 +995,15 @@ Die Historie eines Prozesses definiert sich aus der Menge seiner Ereignisse.
 ...
 Die Zustände werden so erfasst, das das System als totales stimmt. z.B. Bank: die Summe aller Konti sollte unabhängig der Transaktionen immer gleich sein (ohne Transaktionen zu andern Banken).
 
+Mit einem Ereignis enthält der Schnitt auch alle Ereignisse, die vorher statgefunden haben (mit dem Ereignis in einer happend-before Beziehung stehen).
+
 140
 ...
+* Um einen Snapshot zu machen, wird von einem Prozess eine Markernachricht versandt.
+* Die andern Prozesse starten die Kanalaufzeichnung und senden die Markernachricht weiter.
+* Sobald die Prozesse erneut einen Marker erhalten, beenden sie die Aufzeichnung
+* Der Globale Zustand ermittelt sich aus den Prozesszuständen+Kanalzustände (Aufgezeichnete, empfangene Nachrichten, die vor der Aufzeichnung abgesandt wurden)
+
 ::
 
 	Z1 [1000] ----o--------------*----------^---^----o-^--*---------------
@@ -1019,10 +1026,13 @@ Die Zustände werden so erfasst, das das System als totales stimmt. z.B. Bank: d
 	Z3: z3 + {}  = (750-150-200) = 400
 	Total konsistenter Zustand: 2250
 	
-	Gehört e21 auch noch dazu, weil sie während der Messung von Z3 ankommt?
+	Gehört e21 auch noch dazu, weil sie während der Messung von Z3 ankommt, oder nur vor der Messung abgesandte ?
 
 
-
+141
+...
+* Zuverlässigkeit: Jede Nachricht wird genau einmal übermittelt
+* Die Kanäle sind unidirektional und implementieren FIFO
 
 
 
