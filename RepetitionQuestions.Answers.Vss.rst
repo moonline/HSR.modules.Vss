@@ -1000,7 +1000,7 @@ Mit einem Ereignis enthält der Schnitt auch alle Ereignisse, die vorher statgef
 140
 ...
 * Um einen Snapshot zu machen, wird von einem Prozess eine Markernachricht versandt.
-* Die andern Prozesse starten die Kanalaufzeichnung und senden die Markernachricht weiter.
+* Die andern Prozesse starten die Kanalaufzeichnung.
 * Sobald die Prozesse erneut einen Marker erhalten, beenden sie die Aufzeichnung
 * Der Globale Zustand ermittelt sich aus den Prozesszuständen+Kanalzustände (Aufgezeichnete, empfangene Nachrichten, die vor der Aufzeichnung abgesandt wurden)
 
@@ -1039,6 +1039,107 @@ Mit einem Ereignis enthält der Schnitt auch alle Ereignisse, die vorher statgef
 Weil sich die lokalen Zuständer bereits während dem Ermitteln des globalen schon wieder verändert haben.
 
 Der globale Zustand ist deshalb konsistent, weil nur die Nachrichten bis zu einem bestimmten Zeitpunkt und die Nachrichten, die noch unterwegs sind, berücksichtigt werden.
+
+
+Verteilte Synchronisation
+=========================
+
+Verteilten Ausschluss
+---------------------
+
+143
+...
+Die Prozesse müssen einen Weg finden, auszuhandeln, wer in die Critical Session CS eintreten darf, und wer schon drin ist.
+
+Zentraler Koordinator
+	* Ein zentraler Koordinator gibt den Zugang in die CS frei
+	* In einem verteilten System wird der Koordinator gewählt, ansonsten Client-/Server Prinzip
+
+Multicast
+	* Über Multicast wird herausgefunden, ob gerade jemand in der CS ist
+	* Sobald derjenige in der CS wieder draussen ist, benachrichtigt er den wartenden
+
+
+144
+...
+* Es tritt immer nur ein Prozess in die CS ein
+* Kein Prozess verhungert in der Warteliste
+* Prozesse überholen einandern nicht in der Warteschlange
+
+145
+...
+Alle Prozesse stellen eine Anfrage an einen zentralen Server. Sobald die CS frei ist, erhält er vom Server ein Token, um in die CS einzutreten.
+
+a)
+~~
+Dann steht das ganze System still (Single Point of Failure).
+
+b)
+~~
+* Token kann verloren gehen (Stillstand)
+* Token kann doppelt vorkommen (Konflikt)
+* Prozess kann in CS abstürzen und verlässt diese nicht mehr (blockade)
+* Server kann ausfallen (Stillstand)
+
+c)
+~~
+Der Server muss regelmässig überprüfen, ob das Token noch da ist und ansonsten ein neues generieren
+
+146
+...
+Alle Teilnehmer sind in einem Ring angeordnet. Der Token wird herumgegeben. Wer keinen Eintritt in CS will, gibt ihn weiter. Wer Zutritt will gibt ihn nach dem Verlassen weiter.
+
+a)
+~~
+Das Token stirbt mit ihm und er verlässt die CS nie. (Stillstand)
+
+b)
+~~
+Jemand müsste ein neues generieren. (Stillstand)
+
+c)
+~~
+* Mehrere Tokens im Umlauf
+* Token verloren
+* Jemand gibt Token nicht weiter
+* Prozess 2 stibt, 1 kennt 3 nicht um Token weiterzugeben
+
+d)
+~~
+Extreme hoher Bandbreitenbedarf. Das Token wird auch im Kreis herumgegeben, wenn niemand in die CS will. Desto weniger in die CS wollen, desto mehr Nachrichten werden verdandt.
+
+147
+...
+Wer in die CS will, sendet einen Multicast und tritt ein, wenn er von allen Antwort erhalten hat. Wer in der CS ist, gibt erst Antwort, wenn er wieder draussen ist.
+
+* Es muss bekannt sein, wie viele Teilnehmer es gibt -> Bei Multicast nicht der Fall
+
+148
+...
+Gleiches Verfahren wie bei Ricart, nur dass die Anfrage jeweils nur an die Prozesse geht, die in die CS eintreten wollen. Wer gar nicht in die CS will, wird gar nicht gefragt.
+
+
+Wahlen
+------
+
+149
+...
+* Der Wahlauslöser sendet ein Election-Nachricht an den Nachbarn mit einer List, die ihn enthält.
+* Jeder trägt sich in die Liste ein und sendet die Nachricht weiter
+* Erhält der Wahlauslöser die Nachricht und ist schon eingetragen, so bestimmt er die höchste ID, merkt sich dies als Communicator und sendet die Nachricht als Elected-Message weiter.
+* Jeder berechnet den Communicator, wenn er die Message erhält
+
+150
+...
+2(n-1)
+
+151
+...
+* Jeder kennt seine grösseren Nachbarn
+* bei der Wahl sender der Wahlauslöser eine Anfrage an die grösseren (grösste ID's') Nachbarn
+* Jeder sendet wieder eine Anfrage an die grösseren Nachbarn
+* Der lebende Prozess mit der grössten ID, der keine grösseren Nachbarn kennt, ruft sich als Communicator aus indem er dies an alle sendet.
+
 
 
 
