@@ -868,10 +868,158 @@ DHT
 Zeit und globale Zustände
 =========================
 
+122
+---
+Zeit ist die definierung einer Reihenfolge. Die Zeit als physikalische Grösse ist gerichtet und unumkehrbar.
+
+In Informatiksystemen sorgt Zeit dafür, dass Ereignisse in eine Reihenfolge gebracht werden können. Stimmen die Zeiten zweier Systeme nicht überein (was immer der Fall ist, die Frage ist wie viel), so gibt es ein Chaos, weil Ereignisse vor andern erfasst werden, obwohl sie in umgekehrter Reihenfolge passiert sind.
+
+123
+---
+Transaktionen überwachen mittels der Zeit das sich keine Operationen überlagern. Stimmen diese Zeiten nicht, so sind Transaktionen vermischt mit andern, obwohl dies nicht sein darf und nicht protokolliert wird.
+
+124
+---
+Sein eigener Zustand + der Inhalt der Kommunikationskanäle
+
+125
+---
+Ereignisse & Messages
+	Ein Prozess schickt eine Zustandsänderung über einen Kanal an einen andern. Das Absenden und Empfangen sind Ereignisse, die Transaktionsnachricht die Message Z.B. Konto A sendet Transaktion von 200.- an Konto B.
+Marker
+	Teilen allen Prozessen im System mit, das der Zustand aufgezeichnet wird.
+Unterschiedliche Laufzeit der Messages
+	Führt zur Vermischung der Reihenfolge (Nachrichten können andere überholen) beim Empfänger. Darum kann nicht einfach mit einem einfachen Cut der globale Zustand erfasst werden.
+
+126
+---
+physische Uhr
+	Feste Reihenfolge von gleichen Zeitabständen.
+logische Uhr
+	Reihenfolge wird definiert über Reihenfolge der Ereignisse. Keine festen Zeitabstände.
+
+127
+---
+Weil dies zum kompletten Chaos führen würde. Nachrichten würden plötzlich ankommen, bevor se abgeschickt wurden.
+
+128
+---
+Jeder Prozess zählt seine Ereignisse und teilt diese Anzahl jeweils in jeder Nachricht mit. Beim Empfangen aktualisiert jeder Prozess seine logische Uhr, indem er das max(receiveTime, localTime)+1 als neue lokale Zeit übernimmt.
+
+Die logische Uhr kann aus Sicht des einzelnen Prozesses Sprünge aufweisen, weil ein anderer Prozess viel mehr Ereignisse erhält.
+
+Die Prozesse besitzen zwar immer unterschiedliche Zeiten, doch sie befinden sich in einer fest definierten Reihenfolge.
+
+129
+---
+Durch die schwankende Übertragungszeit beim senden des Zeitstempels von einem Zeitserver zu einem Client lässt sich die Zeit nicht genau bestimmen. Die Übertragungszeit ist unbekannt. Sie kann angenähert werden, indem die Nachricht jeweils zurückgesendet wird und der Server die RountTripTime dem Client bekannt gibt. Wird das ganze mehrmals wiederholt, so kann die Zeit angenähert werden aber eben nicht genau bestimmt werden. Alle verteilten Komponenten haben somit eine leicht andere Zeit.
+
+130
+---
+* Gestartet wird bei 1
+* Jeder Prozess inkrementiert bei einem lokalen Ereignis seinen Zähler.
+* Bei einem Empfangsereignis wählt der Prozess max(receiveTime, localTime)+1 als neue lokalZeit.
+* Damit ist die Reihenfolge der Ereignisse festgelegt.
+
+131
+---
+::
+
+	Z1 1 -----*2--------^4------------*5-----------^6----------
+	            `      ´                `        ´
+	Z2 1 ---------v3----------*4---------------*5-^7-----------
+	                 ´          `           `    ´
+	Z3 1 -- ^3--------*4-----------v5--------------------------
+	       ´       ´           `             ´  `
+	Z4 1 *2------*3------------------v5--*6--------v7----------
+
+132
+---
+Aus der logischen Zeit ( C(a)->C(b) ) kann nicht auf die physische Zeit ( a->b ) geschlossen werden.
+
+* "Kausalität impliziert Uhrzeitordnung"
+* "Uhrzeitordnung impliziert NICHT Kausalität"
 
 
+133
+---
+* Jeder Prozess führt ein Array mit den Zeiten aller Prozesse.
+* Nur eigene Ereignisse inkrementieren die lokale Zeit
+* Von andern Prozessen wird damit jeweils nur der Status übernommen
+* von C(a)->C(b) kann auf a->b geschlossen werden
+
+134
+---
+Die Physische Zeit ist die Menge aller Zuständer aller Prozesse.
+
+**Vergleich Lamport CLock LC und Vector CLock LV**
+Initialisierung
+	* LC: 1
+	* VC: 0
+
+lokales Ereignis
+	* LC: time+1
+	* VC: time[actualProcess] +1
+
+Sendeereignis
+	* LC: send(time)
+	* VC: send(time[])
+
+Empfangsereignis
+	* LC: max(localTime, receiveTime)
+	* VC: Zeiten anderer Prozesse aktualisieren auf max(localTime[pi], receiveTime[pi])
+
+135
+---
+Weil sie eine strenge Ordnungsrelation beschreibt
+
+136
+---
+Nein. Sie ist dazu noch unflexibler und funktioniert nur, wenn die Anzahl Prozesse im System festliegt.
 
 
+Globale Zustände
+----------------
+
+137
+...
+* Bank: Tagesauszug / Abrechnung
+* Datenbank Backup
+* Multiplayergame: Spielzustand
+
+138
+...
+Die Historie eines Prozesses definiert sich aus der Menge seiner Ereignisse.
+
+139
+...
+Die Zustände werden so erfasst, das das System als totales stimmt. z.B. Bank: die Summe aller Konti sollte unabhängig der Transaktionen immer gleich sein (ohne Transaktionen zu andern Banken).
+
+140
+...
+::
+
+	Z1 [1000] ----o--------------*----------^---^----o-^--*---------------
+	                 ` 200        ° m1     °   ´      °`    ° 
+	                     `         °     ° m2 ´     °  400`   °
+	                         `      °  °     ´    °          `  °
+	Z2 [500]  -----------^------v----v*--o----------------------v-v-------
+	                    ´          300    `´   ° m3                °
+	                 ´                 ° ´ ` °                      ´°
+	              ´ 150            200 ,°  °`                  ´       °
+	Z3 [750]  -o----------------------*--v*---v-----------o--------------v-
+
+	Z1  o - - >  Z2: von Z1 nach Z2
+	Z1  * ° ° >  Z2: Marker
+	e12: Kanal1, 2. Nachricht im Beispiel, die abgeschickt wird
+	
+	Konsistenter Zustand (2250 Total ursprünglich):
+	Z1: z1 + e32 = (1000-200) + 200 = 1000
+	Z2: z2 + {}  = (500+150+200) = 650
+	Z3: z3 + {}  = (750-150-200) = 400
+	Total konsistenter Zustand: 2250
+	
+	Gehört e21 auch noch dazu, weil sie während der Messung von Z3 ankommt?
 
 
 
