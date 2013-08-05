@@ -1131,5 +1131,47 @@ Wahlen
 
 150
 ...
+2(n-1)
 
+151
+...
+* Jeder kennt seine grösseren Nachbarn
+* bei der Wahl sender der Wahlauslöser eine Anfrage an die grösseren (grösste ID's') Nachbarn
+* Jeder sendet wieder eine Anfrage an die grösseren Nachbarn
+* Der lebende Prozess mit der grössten ID, der keine grösseren Nachbarn kennt, ruft sich als Communicator aus indem er dies an alle sendet.
+
+
+Multicast Kommunikation
+-----------------------
+
+152
+...
+Bei Multicast ist es nicht vorgesehen, das die Anzahl Teilnehmer ermittelt werden kann.
+
+153
+...
+* Ein Knoten wurde sendet einen Nachricht mit seinem Zeitstempel und seiner ID als Identifier an alle
+* Jeder Teilnehmer sendet einen Sequenznummervorschlag zurück
+* Der Initialknoten wählt aus den Vorschlägen die höchste aus und sendet diese an alle
+
+
+Konsens
+-------
+
+154
+...
+Weil der Prozess, der die Schlussentscheidung treffen muss, zwei Resultate hat von den beiden andern Prozessen. Sind diese unterschiedlich, so lässt sich keine Entscheidung treffen (50/50).
+
+155
+...
+* Der Kommandant teil den andern seine Entscheidung mit
+* Jeder teilt den andern seine und die erhaltene Entscheidung mit
+* Der Letzte trifft eine mehrheitsentscheidung
+
+**Beispiel mit 4 Knoten**
+* 1->2,3,4: Angriff
+* 2->3,4: Angriff
+* 3->2,4: Rückzug (Schummelt)
+* 4->2,3: Angriff
+* 2 entscheidet sich 2:1 für Angriff
 
