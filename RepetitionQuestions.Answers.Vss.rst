@@ -1272,3 +1272,80 @@ Eingabesignale an das System werden sofot wieder nach aussen weitergegeben. z.B.
 Petri Netz, mit Aktionen bezeichnet. z.B. on, Betrag erhöhen, ...
 
 
+CSP
+---
+
+165
+...
+Prozessalgebra zur Beschreibung von Prozessen.
+
+166
+...
+Stop
+	Hält das System an.
+Skip
+	Stoppt das System. Anschliessend kann gar nichts mehr gemacht werden.
+
+167
+...
+::
+
+	x: Event
+	P: Prozess
+	
+	( )--x-->(P)   entspricht   x -> P
+	
+	Das Ereignis x wartet darauf, von P akzeptiert zu werden.
+
+
+168
+...
+Die Reihenfolge von Operationen des CSP.
+
+169
+...
+Der Automat wird selbst in die Ereigniskette eingebunden:
+
+::
+
+	CHF : (in5 → out2 → out1 → out2 → CHF )
+
+
+170
+...
+::
+
+	(a -> P|b -> Q)
+
+
+171
+...
+Traces sind eine Art Historie (Prozessspuren).
+
+::
+
+	a -> b -> STOPP
+	
+	Traces: <a>,<a,b>,<>
+	Tracelänge: #<a,b> = 2
+
+
+172
+...
+::
+
+	Channel: c
+	Ausgabe: c!e
+	Eingabe: c?e
+	
+	Beispiel Wert der Eingabe nach Ausgabe kopieren:
+	Copy = in?e -> out!e -> Copy
+
+
+173
+...
+
+
+
+
+
