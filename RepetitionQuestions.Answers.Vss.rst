@@ -1176,3 +1176,99 @@ Weil der Prozess, der die Schlussentscheidung treffen muss, zwei Resultate hat v
 * 2 entscheidet sich 2:1 für Angriff
 
 
+Modellierung verteilter Systeme
+===============================
+
+156
+---
+Nebenläufig
+	Zwei unabhängige Prozessen können (müssen aber nicht) parallel ausgeführt werden
+Parallel
+	Zwei prozesse laufen parallel ab (sind nicht mehr unabhängig)
+
+157
+---
+Producer
+	Produziert Tokens und reiht diese in eine Queue ein
+Consumer
+	Nimmt die Tokens aus der Queue und verbraucht diese
+
+::
+
+	 Producer           Queue            Consumer
+	   P1       T1       P2       T2       P3
+	   (*) ---> [ ] ---> ( ) ---> [ ] ---> (*)
+	    ^--------'                 ^--------'
+	N = [P,T,F,m0]
+	P = {P1,P2,P3}
+	T = {T1, T2}
+	F = {(P1,T1), (T1,P1), (T1,P2), (P2,T2), (T2,P3), (P3,T2)}
+	m0 = {1,0,1}
+
+
+158
+---
+Vorbereich
+	Positionen, die im Falle einer Transition Tokens liefern, bzw. von denen die Transaktion entspringt. Im Beispiel 157 sind P3 und P2 im Vorbereich von T2
+Nachbereich
+	Positionen, die im Falle einer Transition Tokens erhalten. Im Beispiel 157 sind P1 und P2 im Nachbereich von T1
+Konzession
+	Möglichkeit einer Transition zu schalten (Vorbereich ist so belegt, das ein Schalten möglich ist)
+
+159
+---
+Die Verteilung der Tokens auf die Stellen im Netz. Die Markierung m0 beispielsweise stellt den Ausgangszustand dar. m1 im System bei 157: m1 = {1,1,1}
+
+160
+---
+::
+
+	   {1,0,1}
+	 t1 |   ^
+	    v   | t2
+	   {1,1,1}
+	 t1 |   ^
+	    v   | t2
+	   {1,2,1}
+	 t1 |   ^
+	    v   | t2
+	   {1,3,1}
+		...
+
+
+161
+---
+::
+
+	P1                                   P6
+	(*)-->[ ]<----.         .---->[ ]<--(*)
+	 ^     |       `.     .´       |     ^
+	 |     v         `. .´         v     |
+	[ ]   ( ) P2      (*) P4   P5 ( )   [ ]
+	 ^     |          ^ ^          |     ^
+	 |     v        .´   `.        v     |
+	( )<--[ ]------´       `------[ ]-->( )
+	P3                                   P7
+	
+	Kritical Section: P2, P5
+	Local Work: P3, P7
+	Waiting: P1, P6
+
+
+Möchte der linke Prozess in die kritische Section P2 eintreten, so holt sie bei P4 das Token und gibt es anschliessend wieder frei.
+
+162
+---
+Der Crosstalk Algorithmus bildet das Senden und Empfangen von Nachrichten zwischen zwei Teilnehmern ab, wobei immer Bestätigungen versandt werden, wenn die Nachricht erfolgreich angekommen ist. Bedingung: Es darf jeweils nur eine Nachricht im Kanal sein.
+
+Beim Sendern einer Nachricht kommt diese entweder an und der Empfänger sendet eine Bestätigung oder sie überschneidet sich mit einer andern Nachticht (Crosstalk) und der Empfänger sendet keine Bestätigung.
+
+163
+---
+Eingabesignale an das System werden sofot wieder nach aussen weitergegeben. z.B. Kunde drückt auf die Klingel -> System lässt Klingel läuten.
+
+164
+---
+Petri Netz, mit Aktionen bezeichnet. z.B. on, Betrag erhöhen, ...
+
+
